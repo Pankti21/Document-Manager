@@ -1,35 +1,27 @@
 import {ddbClient} from "../database/index.js";
-import { PutItemCommand } from "@aws-sdk/client-dynamodb";
+import {PutItemCommand} from "@aws-sdk/client-dynamodb";
 
-const signUp = async (req, res) => {
-    var input = {
+const signUp = async (request, response) => {
+    const {body} = request
+    const params = {
         TableName: "user",
         Item: {
-          id:  req.body.id,
-          first_name: req.body.firstName,
-          last_name: req.body.lastName,
-          email: req.body.email,
-          password: req.body.password,
+            id: {N: body.id},
+            first_name: {S: body.firstName},
+            last_name: {S: body.lastName},
+            email: {S: body.email},
+            password: {S: body.password},
         },
-      };
-    console.log(req.body);
-    console.log("Testing the post request");
-    
-    try {
-    console.log("Inside try block");
+    };
 
-    console.log("Adding a new item...");
-    
-    const data = await ddbClient.send(new PutItemCommand(input));
-    console.log(data);
-    return data;
+    try {
+        const data = await ddbClient.send(new PutItemCommand(params));
+        response.send(data);
     } catch (error) {
-      console.error(error);
-      return res
-        .status(500)
-        .json({ message: "Internal Server Error", success: false });
+        console.log(error);
+        return error;
     }
-  };
-  
-  export default signUp;
+};
+
+export default signUp;
   
