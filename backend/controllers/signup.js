@@ -3,7 +3,8 @@ import {PutItemCommand} from "@aws-sdk/client-dynamodb";
 import {getHashedPassword} from "../utils/auth.js";
 
 const signUp = async (request, response) => {
-    const {body} = request
+    const {body} = request;
+    const passwordData = getHashedPassword(body.password);
     const params = {
         TableName: "user",
         Item: {
@@ -11,7 +12,8 @@ const signUp = async (request, response) => {
             first_name: {S: body.firstName},
             last_name: {S: body.lastName},
             email: {S: body.email},
-            password: {S: getHashedPassword(body.password)},
+            password: {S: passwordData.hash},
+            password_salt: {S: passwordData.salt}
         },
     };
 
