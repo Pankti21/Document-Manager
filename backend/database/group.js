@@ -5,7 +5,7 @@ const params = {
     TableName: "group",
     KeySchema: [{AttributeName: "id", KeyType: "HASH"}],
     AttributeDefinitions: [
-        {AttributeName: "id", AttributeType: "N"}
+        {AttributeName: "id", AttributeType: "S"}
     ],
     ProvisionedThroughput: {...ProvisionedThroughput}
 };

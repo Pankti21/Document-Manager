@@ -7,13 +7,12 @@ const params = {
         {AttributeName: "file_id", KeyType: "HASH"}
     ],
     AttributeDefinitions: [
-        {AttributeName: "file_id", AttributeType: "N"}
+        {AttributeName: "file_id", AttributeType: "S"}
     ],
     GlobalSecondaryIndexes: [
         {
             IndexName: "url_file_index", KeySchema: [
                 {AttributeName: "file_id", KeyType: "HASH"},
-                {AttributeName: "group_id", KeyType: "RANGE"}
             ],
             Projection: {
                 ProjectionType: 'ALL',
