@@ -7,7 +7,7 @@ const keyLength = 64;
 
 export const getHashedPassword = (password) => {
     const salt = crypto.randomBytes(16).toString('hex');
-    return crypto.pbkdf2Sync(password, salt, iterations, keyLength, algorithm).toString(`hex`);
+    return {salt, hash: crypto.pbkdf2Sync(password, salt, iterations, keyLength, algorithm).toString(`hex`)};
 }
 
 export const isValidPassword = (password, hash, salt) => {
