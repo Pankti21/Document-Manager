@@ -2,15 +2,19 @@ import {ddbClient, ProvisionedThroughput} from "./index.js";
 import {CreateTableCommand} from "@aws-sdk/client-dynamodb";
 
 const params = {
-    TableName: "group",
-    KeySchema: [{AttributeName: "id", KeyType: "HASH"}],
+    TableName: "permission",
+    KeySchema: [
+        {AttributeName: "group_id", KeyType: "HASH"},
+        {AttributeName: "file_id", KeyType: "RANGE"}
+    ],
     AttributeDefinitions: [
-        {AttributeName: "id", AttributeType: "N"}
+        {AttributeName: "group_id", AttributeType: "N"},
+        {AttributeName: "file_id", AttributeType: "N"}
     ],
     ProvisionedThroughput: {...ProvisionedThroughput}
 };
 
-export const createGroupTable = async () => {
+export const createPermissionTable = async () => {
     try {
         return await ddbClient.send(new CreateTableCommand(params));
     } catch (err) {
@@ -18,4 +22,4 @@ export const createGroupTable = async () => {
     }
 }
 
-createGroupTable();
+createPermissionTable();
