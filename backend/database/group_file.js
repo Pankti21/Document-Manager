@@ -11,6 +11,27 @@ const params = {
         {AttributeName: "group_id", AttributeType: "N"},
         {AttributeName: "file_id", AttributeType: "N"}
     ],
+    GlobalSecondaryIndexes: [
+        {
+            IndexName: "group_file_index", KeySchema: [
+                {AttributeName: "file_id", KeyType: "HASH"},
+                {AttributeName: "group_id", KeyType: "RANGE"}
+            ],
+            Projection: {
+                ProjectionType: 'ALL',
+            },
+            ProvisionedThroughput: {...ProvisionedThroughput}
+        },
+        {
+            IndexName: "group_url_index", KeySchema: [
+                {AttributeName: "file_id", KeyType: "HASH"},
+            ],
+            Projection: {
+                ProjectionType: 'KEYS_ONLY',
+            },
+            ProvisionedThroughput: {...ProvisionedThroughput}
+        }
+    ],
     ProvisionedThroughput: {...ProvisionedThroughput}
 };
 
