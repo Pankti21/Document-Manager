@@ -1,18 +1,11 @@
-const AWS = require("aws-sdk");
-
-AWS.config.loadFromPath("../credentials.json");
-
-const DynamoDB = new AWS.DynamoDB();
+import {DynamoDB, ProvisionedThroughput} from "./index";
 
 const createUserTable = () => {
     const params = {
         TableName: "user",
         KeySchema: [{AttributeName: "id", KeyType: "HASH"}],
         AttributeDefinitions: [{AttributeName: "id", AttributeType: "N"}],
-        ProvisionedThroughput: {
-            ReadCapacityUnits: 5,
-            WriteCapacityUnits: 5,
-        }
+        ...ProvisionedThroughput
     };
 
     DynamoDB.createTable(params, function (err, data) {
