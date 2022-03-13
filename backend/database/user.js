@@ -1,22 +1,19 @@
-import {DynamoDB, ProvisionedThroughput} from "./index";
+import {ddbClient, ProvisionedThroughput} from "./index.js";
+import {CreateTableCommand} from "@aws-sdk/client-dynamodb";
 
-const createUserTable = () => {
-    const params = {
-        TableName: "user",
-        KeySchema: [{AttributeName: "id", KeyType: "HASH"}],
-        AttributeDefinitions: [{AttributeName: "id", AttributeType: "N"}],
-        ...ProvisionedThroughput
-    };
+const params = {
+    TableName: "user",
+    KeySchema: [{AttributeName: "id", KeyType: "HASH"}],
+    AttributeDefinitions: [{AttributeName: "id", AttributeType: "N"}],
+    ProvisionedThroughput: {...ProvisionedThroughput}
+};
 
-    DynamoDB.createTable(params, function (err, data) {
-        if (err) {
-            console.error("Unable to create table", err);
-        } else {
-            console.log("Created table", data);
-        }
-    });
+export const createUserTable = async () => {
+    try {
+        return await ddbClient.send(new CreateTableCommand(params));
+    } catch (err) {
+        console.log("Error", err);
+    }
 }
 
-module.exports = {
-    createUserTable
-}
+createUserTable();

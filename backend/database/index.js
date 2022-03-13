@@ -1,8 +1,8 @@
-const AWS = require("aws-sdk");
+import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
 
-AWS.config.loadFromPath("../credentials.json");
-
-export const DynamoDB = new AWS.DynamoDB();
+const REGION = "us-east-1";
+const ddbClient = new DynamoDBClient({region: REGION});
+export {ddbClient};
 
 export const ProvisionedThroughput = {
     ReadCapacityUnits: 5,
