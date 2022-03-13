@@ -8,8 +8,8 @@ const params = {
         {AttributeName: "group_id", KeyType: "RANGE"}
     ],
     AttributeDefinitions: [
-        {AttributeName: "user_id", AttributeType: "N"},
-        {AttributeName: "group_id", AttributeType: "N"}
+        {AttributeName: "user_id", AttributeType: "S"},
+        {AttributeName: "group_id", AttributeType: "S"}
     ],
     GlobalSecondaryIndexes: [
         {
