@@ -4,9 +4,11 @@ import {CreateTableCommand} from "@aws-sdk/client-dynamodb";
 const params = {
     TableName: "user",
     KeySchema: [{AttributeName: "id", KeyType: "HASH"}],
-    AttributeDefinitions: [{AttributeName: "id", AttributeType: "S"}],
-    ProvisionedThroughput: {...ProvisionedThroughput}
+    ProvisionedThroughput: {...ProvisionedThroughput},
+
+    AttributeDefinitions: [{AttributeName: "id", AttributeType: "N"}],
 };
+
 
 export const createUserTable = async () => {
     try {
