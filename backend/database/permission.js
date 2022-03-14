@@ -8,8 +8,8 @@ const params = {
         {AttributeName: "file_id", KeyType: "RANGE"}
     ],
     AttributeDefinitions: [
-        {AttributeName: "group_id", AttributeType: "N"},
-        {AttributeName: "file_id", AttributeType: "N"}
+        {AttributeName: "group_id", AttributeType: "S"},
+        {AttributeName: "file_id", AttributeType: "S"}
     ],
     ProvisionedThroughput: {...ProvisionedThroughput}
 };
