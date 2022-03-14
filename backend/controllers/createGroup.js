@@ -3,20 +3,18 @@ import {PutItemCommand} from "@aws-sdk/client-dynamodb";
 import {getHashedPassword} from "../utils/auth.js";
 import { v4 as uuidv4 } from 'uuid';
 
-const signUp = async (request, response) => {
+const createGroup = async (request, response) => {
     const {body} = request;
-    const passwordData = getHashedPassword(body.password);
+    const userValid = false;
     const timestamp = new Date().getTime();
 
     const params = {
-        TableName: "user",
+        TableName: "group",
         Item: {
-            id: {S: uuidv4() + "" + timestamp},
-            first_name: {S: body.firstName},
-            last_name: {S: body.lastName},
-            email: {S: body.email},
-            password: {S: passwordData.hash},
-            password_salt: {S: passwordData.salt}
+            id: {S: parseInt(uuidv4()) + "" + timestamp},
+            name: {S: body.name},
+            user_id: {S: body.id},
+            admin_ind: {S: body.userId},
         },
     };
 
@@ -29,5 +27,5 @@ const signUp = async (request, response) => {
     }
 };
 
-export default signUp;
+export default createGroup;
   
