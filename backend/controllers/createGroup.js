@@ -1,11 +1,9 @@
 import {ddbClient} from "../database/index.js";
 import {PutItemCommand} from "@aws-sdk/client-dynamodb";
-import {getHashedPassword} from "../utils/auth.js";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 const createGroup = async (request, response) => {
     const {body} = request;
-    const userValid = false;
     const timestamp = new Date().getTime();
 
     const params = {
@@ -20,9 +18,8 @@ const createGroup = async (request, response) => {
 
     try {
         const data = await ddbClient.send(new PutItemCommand(params));
-        response.send(data);
+        return response.send(data);
     } catch (error) {
-        console.log(error);
         return error;
     }
 };
