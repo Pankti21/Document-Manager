@@ -4,17 +4,17 @@ import {CreateTableCommand} from "@aws-sdk/client-dynamodb";
 const params = {
     TableName: "user_group",
     KeySchema: [
-        {AttributeName: "user_id", KeyType: "HASH"},
+        {AttributeName: "user_email", KeyType: "HASH"},
         {AttributeName: "group_id", KeyType: "RANGE"}
     ],
     AttributeDefinitions: [
-        {AttributeName: "user_id", AttributeType: "S"},
+        {AttributeName: "user_email", AttributeType: "S"},
         {AttributeName: "group_id", AttributeType: "S"}
     ],
     GlobalSecondaryIndexes: [
         {
             IndexName: "user_group_index", KeySchema: [
-                {AttributeName: "user_id", KeyType: "HASH"},
+                {AttributeName: "user_email", KeyType: "HASH"},
                 {AttributeName: "group_id", KeyType: "RANGE"}
             ],
             Projection: {
@@ -30,7 +30,7 @@ export const createGroupTable = async () => {
     try {
         return await ddbClient.send(new CreateTableCommand(params));
     } catch (err) {
-        console.log("Error", err);
+        return err;
     }
 }
 

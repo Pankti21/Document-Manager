@@ -13,3 +13,6 @@ export const getHashedPassword = (password) => {
 export const isValidPassword = (password, hash, salt) => {
     return crypto.pbkdf2Sync(password, salt, iterations, keyLength, algorithm).toString(`hex`) === hash
 }
+
+// add to .env
+export const SECRET_KEY = "2324902059381580";
