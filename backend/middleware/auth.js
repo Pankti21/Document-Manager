@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import {SECRET_KEY} from "../utils/auth.js";
 
-export const verifyToken = (request, response, next) => {
+export const validateToken = (request, response, next) => {
     const token = request.headers["x-access-token"];
 
     if (!token) {
