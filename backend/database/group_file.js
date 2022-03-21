@@ -1,39 +1,49 @@
-import {ddbClient, ProvisionedThroughput} from "./index.js";
-import {CreateTableCommand} from "@aws-sdk/client-dynamodb";
+import {
+    CreateTableCommand,
+    PutItemCommand,
+    ScanCommand
+} from "@aws-sdk/client-dynamodb";
+
+import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
+
+import { ddbClient, ProvisionedThroughput } from "./index.js";
 
 const params = {
     TableName: "group_file",
     KeySchema: [
-        {AttributeName: "group_id", KeyType: "HASH"},
-        {AttributeName: "file_id", KeyType: "RANGE"}
+        { AttributeName: "group_id", KeyType: "HASH" },
+        { AttributeName: "file_id", KeyType: "RANGE" }
     ],
     AttributeDefinitions: [
-        {AttributeName: "group_id", AttributeType: "S"},
-        {AttributeName: "file_id", AttributeType: "S"}
+        { AttributeName: "group_id", AttributeType: "S" },
+        { AttributeName: "file_id", AttributeType: "S" },
+        { AttributeName: "file_name", AttributeType: "S" },
+        { AttributeName: "file_url", AttributeType: "S" },
+        { AttributeName: "permission", AttributeType: "B" },
     ],
+    ProvisionedThroughput: ProvisionedThroughput,
     GlobalSecondaryIndexes: [
         {
             IndexName: "group_file_index", KeySchema: [
-                {AttributeName: "file_id", KeyType: "HASH"},
-                {AttributeName: "group_id", KeyType: "RANGE"}
+                { AttributeName: "file_id", KeyType: "HASH" },
+                { AttributeName: "group_id", KeyType: "RANGE" }
             ],
             Projection: {
                 ProjectionType: 'ALL',
             },
-            ProvisionedThroughput: {...ProvisionedThroughput}
+            ProvisionedThroughput: { ...ProvisionedThroughput }
         },
         {
             IndexName: "group_url_index", KeySchema: [
-                {AttributeName: "file_id", KeyType: "HASH"},
+                { AttributeName: "file_id", KeyType: "HASH" },
             ],
             Projection: {
                 ProjectionType: 'KEYS_ONLY',
             },
-            ProvisionedThroughput: {...ProvisionedThroughput}
+            ProvisionedThroughput: { ...ProvisionedThroughput }
         }
-    ],
-    ProvisionedThroughput: {...ProvisionedThroughput}
-};
+    ]
+}
 
 export const createGroupFileTable = async () => {
     try {
@@ -41,6 +51,37 @@ export const createGroupFileTable = async () => {
     } catch (err) {
         return err;
     }
+}
+
+export const addGroupFile = async (file) => {
+    try {
+        const params = {
+            TableName: "group_file",
+            Item: marshall(file)
+        }
+
+        return await ddbClient.send(new PutItemCommand(params));
+    } catch (error) {
+        return error;
+    }
+}
+
+export const readGroupFiles = async () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const params = {
+                TableName: "group_file"
+            }
+
+            const commandResponse = await ddbClient.send(new ScanCommand(params));
+            if (commandResponse.$metadata.httpStatusCode === 200) {
+                resolve(commandResponse.Items.map((item) => unmarshall(item)));
+            }
+            reject(commandResponse);
+        } catch (error) {
+            reject(error);
+        }
+    });
 }
 
 createGroupFileTable();
