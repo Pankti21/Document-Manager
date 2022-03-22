@@ -38,7 +38,10 @@ class FileUploader {
       // return public url if the status is ok
       if (data.$metadata.httpStatusCode < 300 && data.$metadata.httpStatusCode >= 200) {
         const publicUrl = `https://${fileBucketParams.Bucket}.s3.${fileBucketParams.Region}.amazonaws.com/${fileBucketParams.Key}`;
-        return publicUrl;
+        return {
+          url: publicUrl,
+          key: fileBucketParams.Key
+        };
       }
       return;
     } catch (err) {
@@ -57,7 +60,7 @@ class FileUploader {
       const body = (await this.client.send(new GetObjectCommand(fileBucketParams))).Body;
       return body;
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   }
 }

@@ -27,7 +27,7 @@ export const addFileController = async (req, res) => {
 
     // upload the file and get uploaded file name
     const uploader = new FileUploader();
-    const url = await uploader.createFileOnS3(name, body, contentType);
+    const { url, key } = await uploader.createFileOnS3(name, body, contentType);
 
     // generate a unique id
     const id = v4();
@@ -37,6 +37,7 @@ export const addFileController = async (req, res) => {
       file_id: id,
       file_name: name,
       file_url: url,
+      file_key: key,
       group_id: "image-group",
       permission: true
     }
@@ -59,12 +60,12 @@ export const viewFileController = async (req, res) => {
         group_id: "image-group"
       });
   
-      if (!fileUrlResponse || !fileUrlResponse.file_url) {
+      if (!fileUrlResponse || !fileUrlResponse.file_key) {
         res.status(404).send("Not found");
       }
   
-      const key = fileUrlResponse.file_url;
-  
+      const key = fileUrlResponse.file_key;
+      console.log(key);
       const fileService = new FileUploader();
       const stream = await fileService.getFileStream(key);
       stream.pipe(res);
