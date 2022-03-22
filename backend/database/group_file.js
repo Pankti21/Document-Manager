@@ -1,7 +1,8 @@
 import {
     CreateTableCommand,
     PutItemCommand,
-    ScanCommand
+    ScanCommand,
+    GetItemCommand
 } from "@aws-sdk/client-dynamodb";
 
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
@@ -83,5 +84,25 @@ export const readGroupFiles = async () => {
         }
     });
 }
+
+export const readFileUrl = async (file) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const params = {
+          TableName: "group_file",
+          Key: marshall(file),
+          ProjectionExpression: "file_url"
+        }
+  
+        const commandResponse = await ddbClient.send(new GetItemCommand(params));
+        if (commandResponse.$metadata.httpStatusCode === 200) {
+          resolve(unmarshall(commandResponse.Item));
+        }
+        throw new Error("failed.");
+      } catch (error) {
+        reject(error);
+      }
+    })
+  }
 
 createGroupFileTable();
