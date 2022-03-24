@@ -2,7 +2,7 @@ import { v4 } from "uuid";
 
 import FileUploader from "../utils/fileUploadService.js";
 
-import { addGroupFile, readGroupFiles } from "../database/group_file.js";
+import { addGroupFile, readGroupFiles, readFileUrl } from "../database/group_file.js";
 
 export const listFilesController = async (req, res) => {
   const allFiles = await readGroupFiles();
@@ -27,7 +27,7 @@ export const addFileController = async (req, res) => {
 
     // upload the file and get uploaded file name
     const uploader = new FileUploader();
-    const url = await uploader.createFileOnS3(name, body, contentType);
+    const { url, key } = await uploader.createFileOnS3(name, body, contentType);
 
     // generate a unique id
     const id = v4();
@@ -37,6 +37,7 @@ export const addFileController = async (req, res) => {
       file_id: id,
       file_name: name,
       file_url: url,
+      file_key: key,
       group_id: "image-group",
       permission: true
     }
@@ -49,3 +50,27 @@ export const addFileController = async (req, res) => {
     res.status(500).send("Error, please try again.");
   }
 };
+
+export const viewFileController = async (req, res) => {
+    try {
+      const id = req.params.id;
+  
+      const fileUrlResponse = await readFileUrl({
+        file_id: id,
+        group_id: "image-group"
+      });
+  
+      if (!fileUrlResponse || !fileUrlResponse.file_key) {
+        res.status(404).send("Not found");
+      }
+  
+      const key = fileUrlResponse.file_key;
+      console.log(key);
+      const fileService = new FileUploader();
+      const stream = await fileService.getFileStream(key);
+      stream.pipe(res);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Error!");
+    }
+  };

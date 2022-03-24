@@ -4,7 +4,7 @@ import signUp from "../controllers/signup.js";
 import createGroup from "../controllers/createGroup.js";
 import {login} from "../controllers/auth.js";
 import {validateToken} from "../middleware/auth.js";
-import { listFilesController, addFileController } from "../controllers/fileController.js";
+import { listFilesController, addFileController, viewFileController } from "../controllers/fileController.js";
 
 const router = express.Router();
 
@@ -16,5 +16,6 @@ router.post("/login", login);
 
 router.get("/files", listFilesController);
 router.post("/upload", addFileController);
+router.get("/view/:id",viewFileController);
 
 export default router;
