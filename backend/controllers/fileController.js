@@ -74,3 +74,28 @@ export const viewFileController = async (req, res) => {
       res.status(500).send("Error!");
     }
   };
+
+  export const downloadFileController = async (req, res) => {
+    try {
+      const id = req.params.id;
+  
+      const fileUrlResponse = await readFileUrl({
+        file_id: id,
+        group_id: "image-group"
+      }, true );
+  
+      if (!fileUrlResponse || !fileUrlResponse.file_key) {
+        res.status(404).send("Not found");
+      }
+  
+      const key = fileUrlResponse.file_key;
+      console.log(key);
+      const fileService = new FileUploader();
+      const stream = await fileService.getFileStream(key);
+      res.set("Content-Disposition", `attachment; filename="${fileUrlResponse.file_name}"`);
+      stream.pipe(res);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Error!");
+    }
+  };

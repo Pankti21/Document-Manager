@@ -86,13 +86,13 @@ export const readGroupFiles = async () => {
     });
 }
 
-export const readFileUrl = async (file) => {
+export const readFileUrl = async (file, withFileName) => {
     return new Promise(async (resolve, reject) => {
       try {
         const params = {
           TableName: "group_file",
           Key: marshall(file),
-          ProjectionExpression: "file_key"
+          ProjectionExpression: withFileName ? "file_key,file_name" : "file_key"
         }
         console.log(file);
         const commandResponse = await ddbClient.send(new GetItemCommand(params));
