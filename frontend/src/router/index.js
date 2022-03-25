@@ -7,16 +7,16 @@ function AppRouter() {
     return (
         <Router>
             <Switch>
-                <Route path={"/login"}>
+                <Route exact path={"/login"}>
                     <Login/>
                 </Route>
-                <Route path={"/register"}>
+                <Route exact path={"/register"}>
                     <Register/>
                 </Route>
-                <Route path={"/"}>
+                <Route exact path={"/"}>
 
                 </Route>
-                <Route exact path="/files">
+                <Route exact path={"/files"}>
                     <FileModule/>
                 </Route>
             </Switch>
