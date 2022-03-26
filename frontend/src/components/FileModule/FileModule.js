@@ -1,10 +1,11 @@
+import { Button, Form, Badge, Table } from "react-bootstrap";
 import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Axios from "axios";
 
 const FileModule = () => {
-    const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   useEffect(() => {
     getUploadedFiles();
@@ -12,8 +13,8 @@ const FileModule = () => {
 
   const getUploadedFiles = async () => {
     try {
-      const response = await Axios.get("http://localhost:3001/files",{
-        headers:{
+      const response = await Axios.get("http://localhost:3001/files", {
+        headers: {
           "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZmNjNzk2MTctNmM4MC00Y2JjLWI1MDctMzg5ZjhkNmFmZTA1MTY0ODMwNzQ2Mzc5MiIsImVtYWlsIjoidGVzdGVtYWlsQGdtYWlsLmNvbSIsImlhdCI6MTY0ODMwNzg3N30.em4F4DPLDxq18_CFLTDCK2Xln-mrwvlIMsYPtTQ-NQk"
         }
       });
@@ -34,7 +35,7 @@ const FileModule = () => {
         alert("Please select one file");
         return;
       }
-  
+
       const formdata = new FormData();
       formdata.append("file", file);
 
@@ -55,14 +56,23 @@ const FileModule = () => {
 
   return (
     <div className="container">
-      <form onSubmit={uploadFile}>
-        <input type="file" name="file" id="file" />
+      <Form onSubmit={uploadFile}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>File Upload</Form.Label>
+          <Form.Control type="file" id="file" name="file" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label></Form.Label>
+          <Form.Control type="submit" value="Submit" />
+        </Form.Group>
+      </Form>
+      <br></br>
+      <h3>
+        Uploaded Files <Badge bg="secondary"></Badge>
+      </h3>
 
-        <input type="submit" value="Submit" />
-      </form>
-      <h3>Uploaded files</h3>
-      
-      <table>
+
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th>File name</th>
@@ -80,19 +90,19 @@ const FileModule = () => {
                     target="_blank"
                     href={`http://localhost:3001/view/${file.id}`}
                     rel="noreferrer"
-                  >View</a>
+                  > <Button variant="secondary">View</Button>{' '}</a>
                 </td>
                 <td><a
-                    target="_blank"
-                    href={`http://localhost:3001/download/${file.id}`}
-                    rel="noreferrer"
-                  >Download</a>
+                  target="_blank"
+                  href={`http://localhost:3001/download/${file.id}`}
+                  rel="noreferrer"
+                > <Button variant="secondary">Download</Button>{' '}</a>
                 </td>
               </tr>
             )
           })}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 }
