@@ -10,6 +10,10 @@ const createGroup = async (request, response) => {
     return response.status(400).send({ data: "User Id is missing" });
   }
 
+  console.log(name);
+  console.log(user_id);
+  console.log(userId);
+
   const params = {
     TableName: "group",
     Item: {
@@ -20,8 +24,10 @@ const createGroup = async (request, response) => {
     },
   };
 
+  console.log("here put ");
   try {
     const data = await ddbClient.send(new PutItemCommand(params));
+    console.log("here put 1");
     return response.send(data);
   } catch (error) {
     return error;

@@ -1,12 +1,27 @@
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {Button, Form} from "react-bootstrap";
+import * as yup from "yup";
+import {validateYupSchema} from "../../../commonUtils";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {loginUser, registerUser} from "../../../redux/actions";
+import {useDispatch} from "react-redux";
+
 
 function Login() {
 
-    const {register, handleSubmit, watch, formState: {errors}} = useForm();
+    const schema = yup.object({
+        email: validateYupSchema("email", "email"),
+        password: validateYupSchema("password", "password"),
+    }).required();
 
-    const onSubmit = () => {
+    const {handleSubmit, control, formState: {errors}} = useForm({
+        resolver: yupResolver(schema)
+    });
 
+    const dispatch = useDispatch();
+
+    const onSubmit = (values) => {
+        dispatch(loginUser(values));
     }
 
     return (
@@ -15,14 +30,36 @@ function Login() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group>
                     <Form.Label>Email Id</Form.Label>
-                    <Form.Control type="email" placeholder="Email"  {...register("email")}/>
+                    <Controller
+                        defaultValue=""
+                        name="email"
+                        control={control}
+                        render={({field}) =>
+                            (
+
+                                <Form.Control type="email" placeholder="Email" {...field} />
+                            )
+                        }
+                    />
                 </Form.Group>
-                {errors.email && <span>This field is required</span>}
+                <p className="errors">{errors.email?.message}</p>
                 <Form.Group>
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" {...register("password")}/>
+                    <Controller
+                        defaultValue=""
+                        name="password"
+                        control={control}
+                        render={({field}) =>
+                            (
+
+                                <Form.Control type="password" placeholder="Password" {...field} />
+                            )
+                        }
+                    />
                 </Form.Group>
-                <Button variant="primary" className="mt-2">Login</Button>
+
+                <p className="errors">{errors?.password?.message}</p>
+                <Button variant="primary" type="submit" className="mt-2">Login</Button>
             </form>
         </div>
     )

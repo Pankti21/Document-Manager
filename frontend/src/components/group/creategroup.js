@@ -9,6 +9,7 @@ import { Form } from "react-bootstrap";
 const CreateGroup = () => {
   const [users, setUsers] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
+  const [groupName, setGroupName] = useState();
   const [groupDetails, setGroupDetails] = useState({});
 
   //console.log("hello: ", users);
@@ -26,16 +27,29 @@ const CreateGroup = () => {
     }
     console.log(userId);
     setGroupMembers(userId);
-    console.log(selectedOption.value);
     //setGroupMembers(event.target.value);
   };
 
-  const createGroup = () => {
-    setGroupDetails = {};
+  const handleGroupName = (event) => {
+    console.log(event.target.value);
+    setGroupName(event.target.value);
+  };
+
+  const createGroup = (event) => {
+    event.preventDefault();
+
     axios
-      .post(createGroupAPI, groupDetails, {
-        headers: {},
-      })
+      .post(
+        createGroupAPI,
+        {
+          name: groupName,
+          user_id: groupMembers,
+          userId: 10,
+        },
+        {
+          headers: {},
+        }
+      )
       .then((res) => {
         console.log("Res: " + JSON.stringify(res));
         console.log("Res: " + res.data);
@@ -66,23 +80,21 @@ const CreateGroup = () => {
         <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", marginBottom: "20px", fontFamily: "initial" }}>
           <h1>Get more out of you work by creating a group now!</h1>
         </div>
-        <Form>
+        <Form onSubmit={createGroup}>
           <Form.Group>
             <Form.Label style={{ fontWeight: "bold" }}>Please enter your group name</Form.Label>
-            <Form.Control required style={{ width: "30%" }}></Form.Control>
+            <Form.Control required style={{ width: "30%" }} onChange={handleGroupName}></Form.Control>
           </Form.Group>
-        </Form>
-        <div style={{ marginTop: "20px", width: "50%" }}>
-          <div style={{ fontWeight: "bold" }}>
-            <label>Please select your group members</label>
+          <div style={{ marginTop: "20px", width: "50%" }}>
+            <div style={{ fontWeight: "bold" }}>
+              <label>Please select your group members</label>
+            </div>
+            <Select isMulti className="basic-multi-select" classNamePrefix="select" options={users} name="users" onChange={addMembers} />
           </div>
-          <Select isMulti className="basic-multi-select" classNamePrefix="select" options={users} name="users" onChange={addMembers} />
-        </div>
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
-          <Button type="submit" onSubmit={createGroup}>
-            Proceed
-          </Button>
-        </div>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+            <Button type="submit">Proceed</Button>
+          </div>
+        </Form>
       </Container>
     </div>
   );
