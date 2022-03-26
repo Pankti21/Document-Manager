@@ -54,5 +54,5 @@ export const showError = function (error) {
 
 export const isError = (error) => {
     const codes = new Set([200, 201])
-    return !(codes.has(error.response.status));
+    return !(codes.has(error?.response?.status));
 }

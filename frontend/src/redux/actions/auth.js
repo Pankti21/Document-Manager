@@ -20,7 +20,7 @@ export const loginUser = (payload) => ({
     payload
 })
 
-export const userLoginReceived = (payload) => ({
+export const userLoginReceived = (response) => ({
     type: USER_LOGIN_RECEIVED,
-    payload
+    response
 })

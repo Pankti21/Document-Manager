@@ -1,10 +1,11 @@
 import {Controller, useForm} from "react-hook-form";
 import {Button, Form} from "react-bootstrap";
 import * as yup from "yup";
-import {validateYupSchema} from "../../../commonUtils";
+import {isError, validateYupSchema} from "../../../commonUtils";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {loginUser, registerUser} from "../../../redux/actions";
-import {useDispatch} from "react-redux";
+import {loginUser} from "../../../redux/actions";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
 
 
 function Login() {
@@ -14,7 +15,7 @@ function Login() {
         password: validateYupSchema("password", "password"),
     }).required();
 
-    const {handleSubmit, control, formState: {errors}} = useForm({
+    const {handleSubmit, control, formState: {errors}, reset} = useForm({
         resolver: yupResolver(schema)
     });
 
@@ -23,6 +24,19 @@ function Login() {
     const onSubmit = (values) => {
         dispatch(loginUser(values));
     }
+
+    const isUserLoginDone = useSelector((state) => state.auth.isUserLoginDone);
+
+    const userLoginData = useSelector((state) => state.auth.userLoginData);
+
+    useEffect(() => {
+        if (isUserLoginDone) {
+            if (!isError(userLoginData)) {
+                reset();
+                //  route to next page
+            }
+        }
+    }, [isUserLoginDone]);
 
     return (
         <div className="m-5">
