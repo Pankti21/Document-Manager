@@ -10,17 +10,20 @@ import {
     downloadFileController,
     viewFileController
 } from "../controllers/fileController.js";
+import getUsers from "../controllers/getUserList.js";
 
 const router = express.Router();
 
 router.get("/test", testGet);
 router.post("/signup", signUp);
-router.post("/create-group", validateToken, createGroup);
+router.post("/creategroup", createGroup);
 router.post("/login", login);
 
 router.get("/files", validateToken, listFilesController);
 router.post("/upload", validateToken, addFileController);
 router.get("/view/:id", validateToken, viewFileController);
 router.get("/download/:id", validateToken, downloadFileController);
+router.post("/getuserlist", getUsers);
+//router.post("/logout", validateToken, logout);
 
 export default router;
