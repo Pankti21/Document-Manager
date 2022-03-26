@@ -1,0 +1,91 @@
+import React from "react";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import axios from "axios";
+import Select from "react-select";
+import { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
+
+const CreateGroup = () => {
+  const [users, setUsers] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
+  const [groupDetails, setGroupDetails] = useState({});
+
+  //console.log("hello: ", users);
+
+  const getUsersAPI = "http://localhost:3001/getuserlist";
+  const createGroupAPI = "http://localhost:3001/creategroup";
+
+  const addMembers = (selectedOption) => {
+    console.log("helo 1");
+    const userId = [];
+    for (let i = 0; i < selectedOption.length; i++) {
+      console.log("hello ");
+      console.log(selectedOption[i].value);
+      userId[i] = selectedOption[i].value;
+    }
+    console.log(userId);
+    setGroupMembers(userId);
+    console.log(selectedOption.value);
+    //setGroupMembers(event.target.value);
+  };
+
+  const createGroup = () => {
+    setGroupDetails = {};
+    axios
+      .post(createGroupAPI, groupDetails, {
+        headers: {},
+      })
+      .then((res) => {
+        console.log("Res: " + JSON.stringify(res));
+        console.log("Res: " + res.data);
+      })
+      .catch((err) => {
+        console.log("Err", err);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get(getUsersAPI, {
+        headers: {},
+      })
+      .then((res) => {
+        //console.log(res.data);
+        setUsers(res.data.map((ele) => ({ value: ele.id.S, label: ele.first_name.S + " " + ele.last_name.S })));
+        //console.log(users);
+      })
+      .catch((err) => {
+        console.log("Err", err);
+      });
+  }, []);
+
+  return (
+    <div>
+      <Container fluid={true} className="blue-main-gradient py-5 p-2">
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", marginBottom: "20px", fontFamily: "initial" }}>
+          <h1>Get more out of you work by creating a group now!</h1>
+        </div>
+        <Form>
+          <Form.Group>
+            <Form.Label style={{ fontWeight: "bold" }}>Please enter your group name</Form.Label>
+            <Form.Control required style={{ width: "30%" }}></Form.Control>
+          </Form.Group>
+        </Form>
+        <div style={{ marginTop: "20px", width: "50%" }}>
+          <div style={{ fontWeight: "bold" }}>
+            <label>Please select your group members</label>
+          </div>
+          <Select isMulti className="basic-multi-select" classNamePrefix="select" options={users} name="users" onChange={addMembers} />
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+          <Button type="submit" onSubmit={createGroup}>
+            Proceed
+          </Button>
+        </div>
+      </Container>
+    </div>
+  );
+};
+
+export default CreateGroup;

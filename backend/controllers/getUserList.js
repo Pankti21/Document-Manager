@@ -11,8 +11,7 @@ const getUsers = async (request, response) => {
     const command = new ScanCommand(params);
     const data = await ddbClient.send(command);
     console.log("tried");
-    //console.log("Success", data.Item);
-    return data;
+    return response.send(data.Items);
   } catch (error) {
     return error;
   }

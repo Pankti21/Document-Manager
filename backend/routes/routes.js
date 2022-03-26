@@ -13,7 +13,7 @@ router.get("/test", testGet);
 router.post("/signup", signUp);
 router.post("/creategroup", createGroup);
 router.post("/login", login);
-router.post("/getuserlist", getUsers);
+router.get("/getuserlist", getUsers);
 //router.post("/logout", validateToken, logout);
 router.get("/files", listFilesController);
 router.post("/upload", addFileController);
