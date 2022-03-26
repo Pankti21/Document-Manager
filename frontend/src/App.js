@@ -6,6 +6,8 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {Provider} from "react-redux";
 import {store} from "./redux/store";
+import Cookies from 'js-cookie'
+
 
 function App() {
 
@@ -13,7 +15,8 @@ function App() {
 
     useEffect(() => {
         axios.defaults.baseURL = 'http://localhost:3001/';
-        setLoading(false)
+        axios.defaults.headers.common['x-access-token'] = Cookies.get("x-access-token");
+        setLoading(false);
     }, []);
 
     return (

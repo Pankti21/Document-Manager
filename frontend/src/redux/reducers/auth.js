@@ -30,7 +30,8 @@ const auth = (state = initialState, action) => {
         case USER_LOGIN_RECEIVED: {
             return {
                 ...state,
-                isUserLoginDone: true
+                isUserLoginDone: true,
+                userLoginData: action.response
             }
         }
         default: {
