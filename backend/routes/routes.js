@@ -21,8 +21,8 @@ router.post("/login", login);
 
 router.get("/files", validateToken, listFilesController);
 router.post("/upload", validateToken, addFileController);
-router.get("/view/:id", validateToken, viewFileController);
-router.get("/download/:id", validateToken, downloadFileController);
+router.get("/view/:id", viewFileController);
+router.get("/download/:id", downloadFileController);
 router.post("/getuserlist", getUsers);
 //router.post("/logout", validateToken, logout);
 
