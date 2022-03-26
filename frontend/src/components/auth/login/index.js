@@ -3,6 +3,8 @@ import {Button, Form} from "react-bootstrap";
 import * as yup from "yup";
 import {validateYupSchema} from "../../../commonUtils";
 import {yupResolver} from "@hookform/resolvers/yup";
+import {loginUser, registerUser} from "../../../redux/actions";
+import {useDispatch} from "react-redux";
 
 
 function Login() {
@@ -16,8 +18,10 @@ function Login() {
         resolver: yupResolver(schema)
     });
 
+    const dispatch = useDispatch();
+
     const onSubmit = (values) => {
-        console.log(values);
+        dispatch(loginUser(values));
     }
 
     return (

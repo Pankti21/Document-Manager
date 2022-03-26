@@ -1,8 +1,11 @@
 import {Controller, useForm} from "react-hook-form";
 import {Button, Form} from "react-bootstrap";
 import * as yup from "yup";
-import {validateYupSchema} from "../../../commonUtils";
+import {isError, validateYupSchema} from "../../../commonUtils";
 import {yupResolver} from "@hookform/resolvers/yup";
+import {useDispatch, useSelector} from "react-redux";
+import {registerUser} from "../../../redux/actions";
+import {useEffect} from "react";
 
 
 function Register() {
@@ -14,13 +17,28 @@ function Register() {
         password: validateYupSchema("password", "password"),
     }).required();
 
-    const {handleSubmit, control, formState: {errors}} = useForm({
+    const {handleSubmit, control, formState: {errors}, reset} = useForm({
         resolver: yupResolver(schema)
     });
 
+    const dispatch = useDispatch()
+
     const onSubmit = (values) => {
-        console.log(values);
+        dispatch(registerUser(values));
     }
+
+    const isUserRegistrationDone = useSelector((state) => state.auth.isUserRegistrationDone);
+
+    const userRegistrationData = useSelector((state) => state.auth.userRegistrationData);
+
+    useEffect(() => {
+        if (isUserRegistrationDone) {
+            if (!isError(userRegistrationData)) {
+                reset();
+                //  route to next page
+            }
+        }
+    }, [isUserRegistrationDone]);
 
     return (
         <div className="m-5">
