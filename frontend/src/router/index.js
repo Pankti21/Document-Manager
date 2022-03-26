@@ -3,6 +3,7 @@ import Login from "../components/auth/login";
 import Register from "../components/auth/register";
 import FileModule from "../components/FileModule/FileModule";
 import CreateGroup from "../components/group/creategroup";
+import HomePage from "../components/group/homepage";
 
 function AppRouter() {
   return (
@@ -20,6 +21,9 @@ function AppRouter() {
         </Route>
         <Route exact path="/creategroup">
           <CreateGroup />
+        </Route>
+        <Route exact path="/home">
+          <HomePage />
         </Route>
       </Switch>
     </Router>
