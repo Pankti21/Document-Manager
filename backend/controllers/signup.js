@@ -5,6 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 import jwt from "jsonwebtoken";
 
 const signUp = async (request, response) => {
+    try{
     const {email, firstName, lastName, password} = request.body;
 
     if (!email) {
@@ -56,6 +57,8 @@ const signUp = async (request, response) => {
         return response.send(data);
     } catch (error) {
         return error;
+    }}catch(error){
+        console.log(error);
     }
 };
 
