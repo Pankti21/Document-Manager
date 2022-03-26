@@ -1,37 +1,31 @@
-import { ddbClient } from "../database/index.js";
-import { PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { v4 as uuidv4 } from "uuid";
+import {ddbClient} from "../database/index.js";
+import {PutItemCommand} from "@aws-sdk/client-dynamodb";
+import {v4 as uuidv4} from "uuid";
 
 const createGroup = async (request, response) => {
-  const { name, user_id, userId } = request.body;
-  const timestamp = new Date().getTime();
+    const {name, user_id, userId} = request.body;
+    const timestamp = new Date().getTime();
 
-  if (!user_id) {
-    return response.status(400).send({ data: "User Id is missing" });
-  }
+    if (!user_id) {
+        return response.status(400).send({data: "User Id is missing"});
+    }
 
-  console.log(name);
-  console.log(user_id);
-  console.log(userId);
+    const params = {
+        TableName: "group",
+        Item: {
+            id: {S: parseInt(uuidv4()) + "" + timestamp},
+            name: {S: name},
+            user_id: {S: JSON.stringify(user_id)},
+            admin_ind: {S: userId.toString()},
+        },
+    };
 
-  const params = {
-    TableName: "group",
-    Item: {
-      id: { S: parseInt(uuidv4()) + "" + timestamp },
-      name: { S: name },
-      user_id: { S: user_id },
-      admin_ind: { S: userId },
-    },
-  };
-
-  console.log("here put ");
-  try {
-    const data = await ddbClient.send(new PutItemCommand(params));
-    console.log("here put 1");
-    return response.send(data);
-  } catch (error) {
-    return error;
-  }
+    try {
+        const data = await ddbClient.send(new PutItemCommand(params));
+        return response.send(data);
+    } catch (error) {
+        return error;
+    }
 };
 
 export default createGroup;
