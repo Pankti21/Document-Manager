@@ -4,6 +4,8 @@ import Register from "../components/auth/register";
 import FileModule from "../components/FileModule/FileModule";
 import CreateGroup from "../components/group/creategroup";
 import HomePage from "../components/group/homepage";
+import ViewGroup from "../components/group/viewgroup";
+import AddMember from "../components/group/addmember";
 
 function AppRouter() {
   return (
@@ -24,6 +26,12 @@ function AppRouter() {
         </Route>
         <Route exact path="/home">
           <HomePage />
+        </Route>
+        <Route exact path="/viewgroup/:id">
+          <ViewGroup />
+        </Route>
+        <Route exact path="/addmember/:id">
+          <AddMember />
         </Route>
       </Switch>
     </Router>

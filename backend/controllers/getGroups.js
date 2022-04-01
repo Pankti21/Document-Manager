@@ -1,5 +1,6 @@
 import { ddbClient } from "../database/index.js";
 import { GetItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
+//import getGroupFiles from "../controllers/getGroupFiles";
 
 const getGroups = async (request, response) => {
   const params = {

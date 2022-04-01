@@ -10,8 +10,6 @@ import Cookies from 'js-cookie'
 function App() {
   const [loading, setLoading] = useState(true);
 
-    const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         axios.defaults.baseURL = 'http://localhost:3001/';
         axios.defaults.headers.common['x-access-token'] = Cookies.get("x-access-token");

@@ -5,10 +5,13 @@ import axios from "axios";
 import Select from "react-select";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
+import { useHistory, useParams } from "react-router-dom";
 
 const CreateGroup = () => {
+  let history = useHistory();
+
   const [users, setUsers] = useState([]);
-  const [groupMembers, setGroupMembers] = useState([]);
+  const [groupMembers, setGroupMembers] = useState({});
   const [groupName, setGroupName] = useState();
   const [groupDetails, setGroupDetails] = useState({});
 
@@ -20,13 +23,16 @@ const CreateGroup = () => {
   const addMembers = (selectedOption) => {
     console.log("helo 1");
     const userId = [];
+    const userName = [];
     for (let i = 0; i < selectedOption.length; i++) {
       console.log("hello ");
       console.log(selectedOption[i].value);
       userId[i] = selectedOption[i].value;
+      userName[i] = selectedOption[i].label;
     }
     console.log(userId);
-    setGroupMembers(userId);
+    console.log(userName);
+    setGroupMembers({ user_id: userId, user_name: userName });
     //setGroupMembers(event.target.value);
   };
 
@@ -37,13 +43,17 @@ const CreateGroup = () => {
 
   const createGroup = (event) => {
     event.preventDefault();
+    console.log(groupMembers);
+    // console.log(JSON.parse(groupMembers));
+    event.preventDefault();
 
     axios
       .post(
         createGroupAPI,
         {
           name: groupName,
-          user_id: groupMembers,
+          user_id: groupMembers.user_id,
+          user_name: groupMembers.user_name,
           userId: 10,
         },
         {
@@ -53,6 +63,7 @@ const CreateGroup = () => {
       .then((res) => {
         console.log("Res: " + JSON.stringify(res));
         console.log("Res: " + res.data);
+        history.push(`/home`);
       })
       .catch((err) => {
         console.log("Err", err);

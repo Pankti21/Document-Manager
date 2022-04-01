@@ -8,10 +8,21 @@ import axios from "axios";
 import Select from "react-select";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 const HomePage = () => {
   const [group, setGroup] = useState([]);
   const getGroupsAPI = "http://localhost:3001/getgroups";
+
+  let history = useHistory();
+
+  const handleCreateGroup = () => {
+    history.push("/creategroup");
+  };
+
+  const ViewGroup = (event) => {
+    history.push(`/viewgroup/${event.target.value}`);
+  };
 
   useEffect(() => {
     axios
@@ -41,13 +52,20 @@ const HomePage = () => {
                     <Card.Title>{r.name}</Card.Title>
                     <Card.Text>{r.id}</Card.Text>
                   </Card.Body>
+                  <Card.Footer>
+                    <Button value={r.id} onClick={ViewGroup}>
+                      View
+                    </Button>
+                  </Card.Footer>
                 </Card>
               </Col>
             ))
           )}
         </Row>
         <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
-          <button>create new group</button>
+          <button onClick={handleCreateGroup} style={{ backgroundColor: "blue", color: "white", maxWidth: "10%" }}>
+            create new group
+          </button>
         </div>
       </Container>
     </div>
