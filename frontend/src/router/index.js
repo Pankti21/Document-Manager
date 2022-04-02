@@ -6,6 +6,7 @@ import CreateGroup from "../components/group/creategroup";
 import HomePage from "../components/group/homepage";
 import ViewGroup from "../components/group/viewgroup";
 import AddMember from "../components/group/addmember";
+import RemoveMember from "../components/group/removemember";
 
 function AppRouter() {
   return (
@@ -32,6 +33,9 @@ function AppRouter() {
         </Route>
         <Route exact path="/addmember/:id">
           <AddMember />
+        </Route>
+        <Route exact path="/removemember/:id">
+          <RemoveMember />
         </Route>
       </Switch>
     </Router>

@@ -6,6 +6,7 @@ import Select from "react-select";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const CreateGroup = () => {
   let history = useHistory();
@@ -63,6 +64,11 @@ const CreateGroup = () => {
       .then((res) => {
         console.log("Res: " + JSON.stringify(res));
         console.log("Res: " + res.data);
+        Swal.fire({
+          icon: "success",
+          title: `${groupName} created successfully`,
+          text: res.data.message,
+        });
         history.push(`/home`);
       })
       .catch((err) => {

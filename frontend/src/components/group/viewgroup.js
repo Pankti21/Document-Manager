@@ -27,6 +27,9 @@ const ViewGroup = () => {
     history.push(`/addmember/${param.id}`);
   };
 
+  const removeMemberHandler = (event) => {
+    history.push(`/removemember/${param.id}`);
+  };
 
   const getUrl = async (event) => {
     const getFileUrl = `http://localhost:3001/geturl/${param.id}/${event.target.value}`;
@@ -201,10 +204,12 @@ const ViewGroup = () => {
             </Form.Group>
           </Form>
         </Col>
-        <Col style={{
+        <Col
+          style={{
             borderLeft: "2px solid navy",
             marginLeft: "0px",
-          }}>
+          }}
+        >
           <h1 className="col-12 m-4">Group members</h1>
           <Table striped bordered hover>
             <thead>
@@ -224,8 +229,10 @@ const ViewGroup = () => {
               })}
             </tbody>
           </Table>
-          <Button style={{ marginRight: "10px" }} onClick={addMemberHandler}>Add member</Button>
-          <Button>Remove member</Button>
+          <Button style={{ marginRight: "10px" }} onClick={addMemberHandler}>
+            Add member
+          </Button>
+          <Button onClick={removeMemberHandler}>Remove member</Button>
         </Col>
       </Row>
     </Container>
