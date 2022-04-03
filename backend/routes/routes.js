@@ -1,24 +1,34 @@
 import express from "express";
-import testGet from "../controllers/controller.js";
 import signUp from "../controllers/signup.js";
 import createGroup from "../controllers/createGroup.js";
-import { validateToken } from "../middleware/auth.js";
-import { listFilesController, addFileController, downloadFileController, viewFileController } from "../controllers/fileController.js";
+import {validateToken} from "../middleware/auth.js";
+import {
+    addFileController,
+    downloadFileController,
+    listFilesController,
+    viewFileController
+} from "../controllers/fileController.js";
 import getUsers from "../controllers/getUserList.js";
 import getGroups from "../controllers/getGroups.js";
 import getGroupFiles from "../controllers/getGroupFiles.js";
 import getGroupUsers from "../controllers/getGroupUsers.js";
 import getNonGroupUsers from "../controllers/getNonGroupUsers.js";
 import updateGroupUsers from "../controllers/updateGroupUsers.js";
-import { login } from "../controllers/auth.js";
-import { viewGroupFileController, downloadGroupFileController, getGroupFileURLController } from "../controllers/GroupFileController.js";
+import {getCurrentUser, login} from "../controllers/auth.js";
+import {
+    downloadGroupFileController,
+    getGroupFileURLController,
+    viewGroupFileController
+} from "../controllers/GroupFileController.js";
 
 const router = express.Router();
 
-router.get("/test", testGet);
+// router.get("/test", testGet);
 router.post("/signup", signUp);
 router.post("/creategroup", validateToken, createGroup);
 router.post("/login", login);
+router.get("/current-user", validateToken, getCurrentUser)
+
 router.get("/getuserlist", getUsers);
 router.get("/getgroups", getGroups);
 router.get("/getgroupfiles/:id", getGroupFiles);
