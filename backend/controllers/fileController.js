@@ -1,11 +1,17 @@
-import {v4} from "uuid";
+import { v4 } from "uuid";
 
 import FileUploader from "../utils/fileUploadService.js";
 
-import {addGroupFile, readFileUrl, readGroupFiles} from "../database/group_file.js";
+import { addGroupFile, readFileUrl, readGroupFiles } from "../database/group_file.js";
 
 export const listFilesController = async (req, res) => {
-    const allFiles = await readGroupFiles();
+    const { groupId } = req.body;
+
+    if (!groupId) {
+        return res.status(500).send("groupId not provided.");
+    }
+
+    const allFiles = await readGroupFiles(groupId);
 
     const filesFormatted = allFiles.map((file) => {
         return {
@@ -33,7 +39,7 @@ export const addFileController = async (req, res) => {
 
         // upload the file and get uploaded file name
         const uploader = new FileUploader();
-        const {url, key} = await uploader.createFileOnS3(name, body, contentType);
+        const { url, key } = await uploader.createFileOnS3(name, body, contentType);
 
         // generate a unique id
         const id = v4();

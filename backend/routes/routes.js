@@ -38,8 +38,8 @@ router.post("/updategroupusers/:id", updateGroupUsers);
 
 //router.post("/logout", validateToken, logout);
 
-router.get("/files", validateToken, listFilesController);
-router.post("/upload", validateToken, addFileController);
+router.post("/files", listFilesController);
+router.post("/upload", addFileController);
 router.get("/view/:id", viewFileController);
 router.get("/download/:id", downloadFileController);
 router.get("/view/:group/:id", viewGroupFileController);
