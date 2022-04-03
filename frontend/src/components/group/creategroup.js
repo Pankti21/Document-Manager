@@ -55,7 +55,7 @@ const CreateGroup = () => {
           name: groupName,
           user_id: groupMembers.user_id,
           user_name: groupMembers.user_name,
-          userId: 10,
+          // userId: 10,
         },
         {
           headers: {},
