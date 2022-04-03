@@ -1,0 +1,262 @@
+{
+  "Resources": {
+    "ElasticBeanStalkApplication": {
+      "Type": "AWS::ElasticBeanstalk::Application",
+      "Properties": {
+        "ApplicationName": "cloud-crowd",
+        "Description": "Cloud Crowd Web Application"
+      }
+    },
+    "ElasticBeanStalkDevEnvironment": {
+      "Type": "AWS::ElasticBeanstalk::Environment",
+      "Properties": {
+        "ApplicationName": "cloud-crowd",
+        "EnvironmentName": "cloud-crowd-dev",
+        "Description": "Cloud Crowd Development Environment",
+        "SolutionStackName": "64bit Amazon Linux 2 v5.5.1 running Node.js 16",
+        "OptionSettings": [
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": "aws-elasticbeanstalk-ec2-role"
+          }
+        ]
+      },
+      "DependsOn": "ElasticBeanStalkApplication"
+    },
+    "DynamoDBGroupTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "group",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        }
+      }
+    },
+    "DynamoDBGroupFileTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "group_file",
+        "KeySchema": [
+          {
+            "AttributeName": "group_id",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "file_id",
+            "KeyType": "RANGE"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "group_id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "file_id",
+            "AttributeType": "S"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "group_file_index",
+            "KeySchema": [
+              {
+                "AttributeName": "file_id",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "group_id",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5
+            }
+          },
+          {
+            "IndexName": "group_url_index",
+            "KeySchema": [
+              {
+                "AttributeName": "file_id",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "KEYS_ONLY"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5
+            }
+          }
+        ]
+      }
+    },
+    "DynamoDBPermissionTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "permission",
+        "KeySchema": [
+          {
+            "AttributeName": "group_id",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "file_id",
+            "KeyType": "RANGE"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "group_id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "file_id",
+            "AttributeType": "S"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        }
+      }
+    },
+    "DynamoDBShortenedURLTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "shortened_url",
+        "KeySchema": [
+          {
+            "AttributeName": "file_id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "file_id",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "url_file_index",
+            "KeySchema": [
+              {
+                "AttributeName": "file_id",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5
+            }
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        }
+      }
+    },
+    "DynamoDBUserTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "user",
+        "KeySchema": [
+          {
+            "AttributeName": "email",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "email",
+            "AttributeType": "S"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        }
+      }
+    },
+    "DynamoDBUserGroupTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "user_group",
+        "KeySchema": [
+          {
+            "AttributeName": "user_email",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "group_id",
+            "KeyType": "RANGE"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "user_email",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "group_id",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "user_group_index",
+            "KeySchema": [
+              {
+                "AttributeName": "user_email",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "group_id",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5
+            }
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        }
+      }
+    }
+  }
+}
