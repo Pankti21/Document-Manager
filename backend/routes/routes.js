@@ -6,7 +6,8 @@ import {
     addFileController,
     downloadFileController,
     listFilesController,
-    viewFileController
+    viewFileController,
+    analyzeFileWithTextractController
 } from "../controllers/fileController.js";
 import getUsers from "../controllers/getUserList.js";
 import getGroups from "../controllers/getGroups.js";
@@ -42,6 +43,7 @@ router.post("/files", listFilesController);
 router.post("/upload", addFileController);
 router.get("/view/:id", viewFileController);
 router.get("/download/:id", downloadFileController);
+router.get("/analyze/:groupId/:id", analyzeFileWithTextractController);
 router.get("/view/:group/:id", viewGroupFileController);
 router.get("/download/:group/:id", downloadGroupFileController);
 router.get("/geturl/:group/:id", getGroupFileURLController);
