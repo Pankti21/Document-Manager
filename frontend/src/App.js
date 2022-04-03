@@ -22,7 +22,6 @@ function App() {
     ) : (
         <div className="App">
             <Provider store={store}>
-                <AppRouter/>
                 <Main />
             </Provider>
         </div>
