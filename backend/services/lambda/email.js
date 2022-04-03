@@ -1,62 +1,18 @@
 import AWS from 'aws-sdk';
-import {SENDER_EMAIL_ADDRESS} from "../../utils/constants.js";
 
-export const sendEmails = async (emails, subject, message) => {
+export const invokeLambda = (FunctionName, Payload) => {
     AWS.config.update({"region": "us-east-1"});
     const params = {
-        ConfigurationSetName: "cloud-crowd",
-        Source: SENDER_EMAIL_ADDRESS,
-        Destination: {
-            ToAddresses: emails
-        },
-        Message: {
-            Body: {
-                Html: {
-                    Charset: "UTF-8",
-                    Data: message
-                },
-                Text: {
-                    Charset: "UTF-8",
-                    Data: message
-                }
-            },
-            Subject: {
-                Charset: 'UTF-8',
-                Data: subject
-            }
-        }
+        FunctionName, Payload
     };
-    try {
-        const data = await new AWS.SES().sendEmail(params).promise();
-        return {
-            statusCode: 200,
-            body: JSON.stringify(data),
-        };
-    } catch (e) {
-        console.error(e);
-        return {
-            statusCode: 400,
-            body: JSON.stringify(e),
-        };
-    }
+    const lambda = new AWS.Lambda();
+    lambda.invoke(params, (error, data) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log(data);
+        }
+    });
 }
-
-export const sendVerificationEmail = async (email) => {
-    const params = {
-        EmailAddress: email
-    }
-    AWS.config.update({"region": "us-east-1"});
-    try {
-        const data = await new AWS.SES().verifyEmailIdentity(params).promise();
-        return {
-            statusCode: 200,
-            body: JSON.stringify(data),
-        };
-    } catch (e) {
-        console.error(e);
-        return {
-            statusCode: 400,
-            body: JSON.stringify(e),
-        };
-    }
-}
+// invokeLambda("sendVerificationEmail", '{"email" : "uppeabhishek97@gmail.com"}');
+// invokeLambda("sendEmail", '{"emails" : ["uppeabhishek97@gmail.com"], "message": "hello", "subject": "world"}');
