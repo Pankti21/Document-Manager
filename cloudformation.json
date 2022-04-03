@@ -257,6 +257,50 @@
           "WriteCapacityUnits": 5
         }
       }
+    },
+    "S3DevBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "cloud-crowd-dev",
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": false,
+          "BlockPublicPolicy": false,
+          "IgnorePublicAcls": false,
+          "RestrictPublicBuckets": false
+        }
+      }
+    },
+    "LambdaSendVerificationEmailDev": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x",
+        "FunctionName": "sendVerificationEmail",
+        "Code": {
+          "ZipFile": "const AWS = require(\"aws-sdk\");\nexports.handler = async (event) => {\n    const { email } = event;\n    const params = {\n        EmailAddress: email\n    }\n    \n    AWS.config.update({\"region\": \"us-east-1\"});\n    \n    try {\n        const data = await new AWS.SES().verifyEmailIdentity(params).promise();\n        return {\n            statusCode: 200,\n            body: JSON.stringify(data),\n        };\n    } catch(e) {\n        console.error(e);\n        return {\n            statusCode: 400,\n            body: JSON.stringify(e),\n        };\n    }\n};\n"
+        },
+        "Role": "arn:aws:iam::342353252634:role/lambda",
+        "Description": "Lambda Function for sending verification emails",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      }
+    },
+    "LambdaSendEmailDev": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x",
+        "FunctionName": "sendEmail",
+        "Code": {
+          "ZipFile": "const AWS = require(\"aws-sdk\");\nexports.handler = async (event) => {\n    const {emails, subject, message} = event;\n    AWS.config.update({\"region\": \"us-east-1\"});\n    const params = {\n        ConfigurationSetName: \"cloud-crowd\",\n        Source: \"dalhousiecloudcrowd37@gmail.com\",\n        Destination: {\n            ToAddresses: emails\n        },\n        Message: {\n            Body: {\n                Html: {\n                    Charset: \"UTF-8\",\n                    Data: message\n                },\n                Text: {\n                    Charset: \"UTF-8\",\n                    Data: message\n                }\n            },\n            Subject: {\n                Charset: 'UTF-8',\n                Data: subject\n            }\n        }\n    };\n    try {\n        const data = await new AWS.SES().sendEmail(params).promise();\n        return {\n            statusCode: 200,\n            body: JSON.stringify(data),\n        };\n    } catch (e) {\n        console.error(e);\n        return {\n            statusCode: 400,\n            body: JSON.stringify(e),\n        };\n    }\n};\n"
+        },
+        "Role": "arn:aws:iam::342353252634:role/lambda",
+        "Description": "Lambda Function for sending emails",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      }
     }
   }
 }
