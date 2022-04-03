@@ -35,3 +35,7 @@ export const login = async (request, response) => {
     }
     return response.status(400).send({data: "Invalid credentials"});
 }
+
+export const getCurrentUser = async (request, response) => {
+    return response.send(jwt.decode(request.headers["x-access-token"], SECRET_KEY));
+}
