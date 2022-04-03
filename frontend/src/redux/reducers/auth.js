@@ -1,11 +1,20 @@
-import {LOGIN_USER, REGISTER_USER, USER_LOGIN_RECEIVED, USER_REGISTRATION_RECEIVED} from "../actions";
+import {
+    LOGIN_USER,
+    REGISTER_USER,
+    USER_LOGIN_RECEIVED,
+    USER_REGISTRATION_RECEIVED,
+    GET_CURRENT_USER,
+    CURRENT_USER_RECEIVED
+} from "../actions";
 
 
 const initialState = {
     isUserRegistrationDone: false,
     userRegistrationData: {},
     isUserLoginDone: false,
-    userLoginData: {}
+    userLoginData: {},
+    isCurrentUserDone: true,
+    currentUserData: {}
 }
 
 const auth = (state = initialState, action) => {
@@ -32,6 +41,19 @@ const auth = (state = initialState, action) => {
                 ...state,
                 isUserLoginDone: true,
                 userLoginData: action.response
+            }
+        }
+        case GET_CURRENT_USER: {
+            return {
+                ...state,
+                isCurrentUserDone: false
+            }
+        }
+        case CURRENT_USER_RECEIVED: {
+            return {
+                ...state,
+                isCurrentUserDone: true,
+                currentUserData: action.response
             }
         }
         default: {

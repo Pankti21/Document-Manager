@@ -1,5 +1,5 @@
 import {ddbClient} from "../database/index.js";
-import {GetItemCommand, ScanCommand} from "@aws-sdk/client-dynamodb";
+import {ScanCommand} from "@aws-sdk/client-dynamodb";
 
 const getUsers = async (request, response) => {
     const params = {
