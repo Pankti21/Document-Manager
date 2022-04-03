@@ -9,8 +9,12 @@ import Select from "react-select";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
+  const currentUser = useSelector((state) => state.auth.userLoginData);
+  console.log("user:", currentUser);
+
   const [group, setGroup] = useState([]);
   const getGroupsAPI = "http://localhost:3001/getgroups";
 
