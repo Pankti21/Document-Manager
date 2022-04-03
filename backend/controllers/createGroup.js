@@ -20,7 +20,7 @@ const createGroup = async (request, response) => {
       name: { S: name },
       user_id: { S: user_id.toString() },
       user_name: { S: user_name.toString() },
-      admin_ind: { S: userId.toString() },
+      admin_user_id: { S: userId.toString() },
     },
   };
 

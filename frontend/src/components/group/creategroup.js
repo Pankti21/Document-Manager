@@ -7,9 +7,13 @@ import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 const CreateGroup = () => {
   let history = useHistory();
+
+  const currentUser = useSelector((state) => state.auth.currentUserData);
+  console.log("user:", currentUser);
 
   const [users, setUsers] = useState([]);
   const [groupMembers, setGroupMembers] = useState({});
@@ -30,6 +34,10 @@ const CreateGroup = () => {
       console.log(selectedOption[i].value);
       userId[i] = selectedOption[i].value;
       userName[i] = selectedOption[i].label;
+    }
+    if (!userId.includes(currentUser.userId)) {
+      userId[userId.length] = currentUser.id.S;
+      userName[userName.length] = currentUser.first_name.S + " " + currentUser.last_name.S;
     }
     console.log(userId);
     console.log(userName);
@@ -55,7 +63,7 @@ const CreateGroup = () => {
           name: groupName,
           user_id: groupMembers.user_id,
           user_name: groupMembers.user_name,
-          // userId: 10,
+          userId: currentUser.id.S,
         },
         {
           headers: {},
@@ -82,9 +90,14 @@ const CreateGroup = () => {
         headers: {},
       })
       .then((res) => {
-        //console.log(res.data);
-        setUsers(res.data.map((ele) => ({ value: ele.id.S, label: ele.first_name.S + " " + ele.last_name.S })));
-        //console.log(users);
+        let resUsers = [];
+        console.log("get users:", res.data);
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].id.S != currentUser.id.S) {
+            resUsers.push(res.data[i]);
+          }
+        }
+        setUsers(resUsers.map((ele) => ({ value: ele.id.S, label: ele.first_name.S + " " + ele.last_name.S })));
       })
       .catch((err) => {
         console.log("Err", err);

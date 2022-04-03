@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const HomePage = () => {
-  const currentUser = useSelector((state) => state.auth.userLoginData);
+  const currentUser = useSelector((state) => state.auth.currentUserData);
   console.log("user:", currentUser);
 
   const [group, setGroup] = useState([]);
@@ -30,9 +30,13 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get(getGroupsAPI, {
-        headers: {},
-      })
+      .post(
+        getGroupsAPI,
+        { currentUserId: currentUser.id.S },
+        {
+          headers: {},
+        }
+      )
       .then((res) => {
         console.log(res);
         setGroup(res.data.map((ele) => ({ id: ele.id.S, name: ele.name.S })));
