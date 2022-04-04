@@ -5,7 +5,8 @@
       "Properties": {
         "ApplicationName": "cloud-crowd",
         "Description": "Cloud Crowd Web Application"
-      }
+      },
+      "DependsOn": "BeanStalkPublicSubnet"
     },
     "ElasticBeanStalkEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
@@ -44,7 +45,8 @@
           "ReadCapacityUnits": 5,
           "WriteCapacityUnits": 5
         }
-      }
+      },
+      "DependsOn": "DynamoDBPrivateSubnet2"
     },
     "DynamoDBGroupFileTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -112,7 +114,8 @@
             }
           }
         ]
-      }
+      },
+      "DependsOn": "DynamoDBPrivateSubnet2"
     },
     "DynamoDBPermissionTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -142,7 +145,8 @@
           "ReadCapacityUnits": 5,
           "WriteCapacityUnits": 5
         }
-      }
+      },
+      "DependsOn": "DynamoDBPrivateSubnet2"
     },
     "DynamoDBShortenedURLTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -182,7 +186,8 @@
           "ReadCapacityUnits": 5,
           "WriteCapacityUnits": 5
         }
-      }
+      },
+      "DependsOn": "DynamoDBPrivateSubnet2"
     },
     "DynamoDBUserTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -204,7 +209,8 @@
           "ReadCapacityUnits": 5,
           "WriteCapacityUnits": 5
         }
-      }
+      },
+      "DependsOn": "DynamoDBPrivateSubnet2"
     },
     "DynamoDBUserGroupTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -256,7 +262,8 @@
           "ReadCapacityUnits": 5,
           "WriteCapacityUnits": 5
         }
-      }
+      },
+      "DependsOn": "DynamoDBPrivateSubnet2"
     },
     "S3Bucket": {
       "Type": "AWS::S3::Bucket",
@@ -300,6 +307,293 @@
         "TracingConfig": {
           "Mode": "Active"
         }
+      }
+    },
+    "VPC": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cloud-crowd"
+          }
+        ]
+      }
+    },
+    "BeanStalkPublicSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            "0",
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.0.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cloud-crowd-beanstalk-public-subnet"
+          }
+        ]
+      },
+      "DependsOn": "VPC"
+    },
+    "DynamoDBPrivateSubnet1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            "0",
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.1.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cloud-crowd-dynamodb-private-subnet-1"
+          }
+        ]
+      },
+      "DependsOn": "VPC"
+    },
+    "DynamoDBPrivateSubnet2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            "0",
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.2.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cloud-crowd-dynamodb-private-subnet-2"
+          }
+        ]
+      },
+      "DependsOn": "DynamoDBPrivateSubnet1"
+    },
+    "InternetGateway": {
+      "Type": "AWS::EC2::InternetGateway"
+    },
+    "GatewayToInternet": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "InternetGatewayId": {
+          "Ref": "InternetGateway"
+        }
+      }
+    },
+    "PublicRouteTable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        }
+      }
+    },
+    "PublicRoute": {
+      "Type": "AWS::EC2::Route",
+      "DependsOn": "GatewayToInternet",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PublicRouteTable"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "InternetGateway"
+        }
+      }
+    },
+    "BeanStalkPublicSubnetRouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "BeanStalkPublicSubnet"
+        },
+        "RouteTableId": {
+          "Ref": "PublicRouteTable"
+        }
+      }
+    },
+    "NatGateway": {
+      "Type": "AWS::EC2::NatGateway",
+      "DependsOn": "NatPublicIP",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "BeanStalkPublicSubnet"
+        },
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "NatPublicIP",
+            "AllocationId"
+          ]
+        }
+      }
+    },
+    "NatPublicIP": {
+      "Type": "AWS::EC2::EIP",
+      "DependsOn": "VPC",
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "PrivateRouteTable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        }
+      }
+    },
+    "PrivateRoute": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "NatGatewayId": {
+          "Ref": "NatGateway"
+        },
+        "RouteTableId": {
+          "Ref": "PrivateRouteTable"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0"
+      }
+    },
+    "DynamoDBPrivateSubnet1RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "DynamoDBPrivateSubnet1"
+        },
+        "RouteTableId": {
+          "Ref": "PrivateRouteTable"
+        }
+      }
+    },
+    "DynamoDBPrivateSubnet2RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "DynamoDBPrivateSubnet2"
+        },
+        "RouteTableId": {
+          "Ref": "PrivateRouteTable"
+        }
+      }
+    },
+    "CloudCrowdPublicSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Public Security group for public access EC2",
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 22,
+            "ToPort": 22,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 443,
+            "ToPort": 443,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "SecurityGroupEgress": {
+          "IpProtocol": -1,
+          "FromPort": 0,
+          "ToPort": 65535,
+          "CidrIp": "0.0.0.0/0"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cloud-crowd-public-security-group"
+          }
+        ]
+      }
+    },
+    "CloudCrowdPrivateSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Private Security group for private access DynamoDb",
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 443,
+            "ToPort": 443,
+            "SourceSecurityGroupId": {
+              "Fn::GetAtt": [
+                "CloudCrowdPublicSecurityGroup",
+                "GroupId"
+              ]
+            }
+          }
+        ],
+        "SecurityGroupEgress": {
+          "IpProtocol": -1,
+          "FromPort": 0,
+          "ToPort": 65535,
+          "CidrIp": "0.0.0.0/0"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cloud-crowd-private-security-group"
+          }
+        ]
+      }
+    },
+    "DynamoDbSubnetGroup": {
+      "Type": "AWS::DAX::SubnetGroup",
+      "Properties": {
+        "SubnetGroupName": "dynamodb-subnet-group",
+        "Description": "Description of Dynamodb subnet group",
+        "SubnetIds": [
+          {
+            "Ref": "DynamoDBPrivateSubnet1"
+          },
+          {
+            "Ref": "DynamoDBPrivateSubnet2"
+          }
+        ]
       }
     }
   }
