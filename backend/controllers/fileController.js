@@ -4,6 +4,7 @@ import FileUploader from "../utils/fileUploadService.js";
 
 import { addGroupFile, readFileUrl, readGroupFiles } from "../database/group_file.js";
 import { analyzeFile } from "../services/textract.js";
+import { translateFile } from "../services/translate.js";
 
 export const listFilesController = async (req, res) => {
     const { groupId } = req.body;
@@ -158,3 +159,46 @@ export const analyzeFileWithTextractController = async (req, res) => {
         return res.status(500).send(err.message);
     }
 }
+
+export const translateFileController = async (req, res) => {
+    try {
+      const { id, groupId } = req.params;
+      const { targetLanguageCode } = req.body;
+  
+      if (!id) {
+        res.status(500).send("`fileId` is missing.");
+      } else if (!targetLanguageCode) {
+        res.status(500).send("`targetLanguageCode is missing.");
+      }
+  
+  
+      const fileUrlResponse = await readFileUrl(
+        {
+          file_id: id,
+          group_id: groupId,
+        },
+        true
+      );
+  
+      if (!fileUrlResponse || !fileUrlResponse.file_key) {
+        res.status(404).send("Not found");
+      }
+  
+      const key = fileUrlResponse.file_key;
+  
+      const blocks = await analyzeFile(key);
+  
+      const blockLines = blocks.filter(({ BlockType }) => BlockType === "LINE").map((block) => {
+        return {
+          text: block.Text
+        }
+      });
+  
+      const translatedData = await translateFile(blockLines, targetLanguageCode);
+  
+      res.status(200).send(translatedData);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send(err.message);
+    }
+  }
