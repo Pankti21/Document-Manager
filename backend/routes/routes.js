@@ -1,8 +1,14 @@
 import express from "express";
 import signUp from "../controllers/signup.js";
 import createGroup from "../controllers/createGroup.js";
-import { validateToken } from "../middleware/auth.js";
-import { addFileController, downloadFileController, listFilesController, viewFileController } from "../controllers/fileController.js";
+import {validateToken} from "../middleware/auth.js";
+import {
+    addFileController,
+    downloadFileController,
+    listFilesController,
+    viewFileController,
+    analyzeFileWithTextractController
+} from "../controllers/fileController.js";
 import getUsers from "../controllers/getUserList.js";
 import getGroups from "../controllers/getGroups.js";
 import getGroupFiles from "../controllers/getGroupFiles.js";
@@ -32,10 +38,11 @@ router.post("/updategroupusers/:id", validateToken, updateGroupUsers);
 
 //router.post("/logout", validateToken, logout);
 
-router.get("/files", validateToken, listFilesController);
-router.post("/upload", validateToken, addFileController);
+router.post("/files", listFilesController);
+router.post("/upload", addFileController);
 router.get("/view/:id", viewFileController);
 router.get("/download/:id", downloadFileController);
+router.get("/analyze/:groupId/:id", analyzeFileWithTextractController);
 router.get("/view/:group/:id", viewGroupFileController);
 router.get("/download/:group/:id", downloadGroupFileController);
 router.get("/geturl/:group/:id", getGroupFileURLController);

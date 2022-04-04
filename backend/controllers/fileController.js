@@ -1,11 +1,18 @@
-import {v4} from "uuid";
+import { v4 } from "uuid";
 
 import FileUploader from "../utils/fileUploadService.js";
 
-import {addGroupFile, readFileUrl, readGroupFiles} from "../database/group_file.js";
+import { addGroupFile, readFileUrl, readGroupFiles } from "../database/group_file.js";
+import { analyzeFile } from "../services/textract.js";
 
 export const listFilesController = async (req, res) => {
-    const allFiles = await readGroupFiles();
+    const { groupId } = req.body;
+
+    if (!groupId) {
+        return res.status(500).send("groupId not provided.");
+    }
+
+    const allFiles = await readGroupFiles(groupId);
 
     const filesFormatted = allFiles.map((file) => {
         return {
@@ -33,7 +40,7 @@ export const addFileController = async (req, res) => {
 
         // upload the file and get uploaded file name
         const uploader = new FileUploader();
-        const {url, key} = await uploader.createFileOnS3(name, body, contentType);
+        const { url, key } = await uploader.createFileOnS3(name, body, contentType);
 
         // generate a unique id
         const id = v4();
@@ -108,3 +115,46 @@ export const downloadFileController = async (req, res) => {
         res.status(500).send("Error!");
     }
 };
+
+export const analyzeFileWithTextractController = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const groupId = req.params.groupId;
+
+        const fileUrlResponse = await readFileUrl(
+            {
+                file_id: id,
+                group_id: groupId,
+            },
+            true
+        );
+
+        if (!fileUrlResponse || !fileUrlResponse.file_key) {
+            res.status(404).send("Not found");
+        }
+
+        const key = fileUrlResponse.file_key;
+
+        const blocks = await analyzeFile(key);
+
+        const blockLines = blocks.filter(({ BlockType }) => BlockType === "LINE").map((block) => {
+            return {
+                text: block.Text
+            }
+        });
+
+        const blockWords = blocks.filter(({ BlockType }) => BlockType === "WORD").map((block) => {
+            return {
+                text: block.Text
+            }
+        });
+
+        return res.status(200).send({
+            words: blockWords,
+            lines: blockLines
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send(err.message);
+    }
+}

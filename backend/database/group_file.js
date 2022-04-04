@@ -62,23 +62,28 @@ export const addGroupFile = async (file) => {
     }
 };
 
-export const readGroupFiles = async () => {
+export const readGroupFiles = async (groupId) => {
     return new Promise(async (resolve, reject) => {
-        try {
-            const params = {
-                TableName: "group_file",
-            };
-
-            const commandResponse = await ddbClient.send(new ScanCommand(params));
-            if (commandResponse.$metadata.httpStatusCode === 200) {
-                resolve(commandResponse.Items.map((item) => unmarshall(item)));
-            }
-            reject(commandResponse);
-        } catch (error) {
-            reject(error);
+      try {
+        const params = {
+          TableName: "group_file",
+          FilterExpression: "group_id = :groupId",
+          ExpressionAttributeValues: {
+            ":groupId": { S: groupId }
+          }
+        };
+  
+        const commandResponse = await ddbClient.send(new ScanCommand(params));
+        if (commandResponse.$metadata.httpStatusCode === 200) {
+          resolve(commandResponse.Items.map((item) => unmarshall(item)));
         }
+        reject(commandResponse);
+      } catch (error) {
+        reject(error);
+      }
     });
-};
+  };
+  
 
 export const readFileUrl = async (file, withFileName) => {
     return new Promise(async (resolve, reject) => {

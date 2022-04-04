@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "../components/auth/login";
 import Register from "../components/auth/register";
 import FileModule from "../components/FileModule/FileModule";
@@ -7,35 +7,39 @@ import HomePage from "../components/group/homepage";
 import ViewGroup from "../components/group/viewgroup";
 import AddMember from "../components/group/addmember";
 import RemoveMember from "../components/group/removemember";
+import FileAnalyze from "../components/FileModule/FileAnalyze";
 
 function AppRouter() {
     return (
         <Router>
             <Switch>
                 <Route exact path={"/login"}>
-                    <Login/>
+                    <Login />
                 </Route>
                 <Route exact path={"/register"}>
-                    <Register/>
+                    <Register />
                 </Route>
                 <Route exact path={"/"}></Route>
                 <Route exact path={"/files"}>
-                    <FileModule/>
+                    <FileModule />
+                </Route>
+                <Route exact path="/analyze/:groupId/:fileId">
+                    <FileAnalyze />
                 </Route>
                 <Route exact path="/creategroup">
-                    <CreateGroup/>
+                    <CreateGroup />
                 </Route>
                 <Route exact path="/home">
-                    <HomePage/>
+                    <HomePage />
                 </Route>
                 <Route exact path="/viewgroup/:id">
-                    <ViewGroup/>
+                    <ViewGroup />
                 </Route>
                 <Route exact path="/addmember/:id">
-                    <AddMember/>
+                    <AddMember />
                 </Route>
                 <Route exact path="/removemember/:id">
-                    <RemoveMember/>
+                    <RemoveMember />
                 </Route>
             </Switch>
         </Router>

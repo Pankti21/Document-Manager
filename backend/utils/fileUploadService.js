@@ -3,7 +3,7 @@ import {GetObjectCommand, PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
 class FileUploader {
     region = "us-east-1";
     bucketParams = {
-        Bucket: "cloudcrowd",
+        Bucket: "cloudcrowd2",
         Region: this.region
     };
 
