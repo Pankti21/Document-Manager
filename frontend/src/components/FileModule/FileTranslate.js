@@ -47,13 +47,49 @@ const FileTranslate = () => {
           flexFlow: "column",
           gap: "32px"
         }}
-      className="container">
+        className="container">
         <h1>Select the target language</h1>
         <FormSelect onChange={updateLanguageCode}>
           <option value="0">Select a language</option>
-          <option value="gu">Gujarati</option>
-          <option value="hi">Hindi</option>
-          <option value="ar">Arabic</option>
+          <option value="sq"> Albanian</option>
+          <option value="am"> Amharic</option>
+          <option value="ar"> Arabic</option>
+          <option value="hy"> Armenian</option>
+          <option value="az"> Azerbaijani</option>
+          <option value="bn"> Bengali</option>
+          <option value="bs"> Bosnian</option>
+          <option value="bg"> Bulgarian</option>
+          <option value="ca"> Catalan</option>
+          <option value="hr"> Croatian</option>
+          <option value="cs"> Czech</option>
+          <option value="da"> Danish</option>
+          <option value="nl"> Dutch</option>
+          <option value="en"> English</option>
+          <option value="et"> Estonian</option>
+          <option value="fa"> Farsi</option>
+          <option value="fi"> Finnish</option>
+          <option value="fr"> French</option>
+          <option value="ka"> Georgian</option>
+          <option value="de"> German</option>
+          <option value="el"> Greek</option>
+          <option value="gu"> Gujarati</option>
+          <option value="ha"> Hausa</option>
+          <option value="he"> Hebrew</option>
+          <option value="hi"> Hindi</option>
+          <option value="hu"> Hungarian</option>
+          <option value="is"> Icelandic</option>
+          <option value="id"> Indonesian</option>
+          <option value="ga"> Irish</option>
+          <option value="it"> Italian</option>
+          <option value="ja"> Japanese</option>
+          <option value="kn"> Kannada</option>
+          <option value="kk"> Kazakh</option>
+          <option value="ko"> Korean</option>
+          <option value="lv"> Latvian</option>
+          <option value="lt"> Lithuanian</option>
+          <option value="mk"> Macedonian</option>
+          <option value="ms"> Malay</option>
+          <option value="ml"> Malayalam</option>
         </FormSelect>
       </div>
     )
