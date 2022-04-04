@@ -7,12 +7,12 @@
         "Description": "Cloud Crowd Web Application"
       }
     },
-    "ElasticBeanStalkDevEnvironment": {
+    "ElasticBeanStalkEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
       "Properties": {
         "ApplicationName": "cloud-crowd",
-        "EnvironmentName": "cloud-crowd-dev",
-        "Description": "Cloud Crowd Development Environment",
+        "EnvironmentName": "cloud-crowd-env",
+        "Description": "Cloud Crowd Environment",
         "SolutionStackName": "64bit Amazon Linux 2 v5.5.1 running Node.js 16",
         "OptionSettings": [
           {
@@ -258,10 +258,10 @@
         }
       }
     },
-    "S3DevBucket": {
+    "S3Bucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "BucketName": "cloud-crowd-dev",
+        "BucketName": "cloud-crowd",
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": false,
           "BlockPublicPolicy": false,
@@ -270,7 +270,7 @@
         }
       }
     },
-    "LambdaSendVerificationEmailDev": {
+    "LambdaSendVerificationEmail": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Handler": "index.handler",
@@ -286,7 +286,7 @@
         }
       }
     },
-    "LambdaSendEmailDev": {
+    "LambdaSendEmail": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Handler": "index.handler",
