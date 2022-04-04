@@ -14,7 +14,7 @@
         "ApplicationName": "cloud-crowd",
         "EnvironmentName": "cloud-crowd-env",
         "Description": "Cloud Crowd Environment",
-        "SolutionStackName": "64bit Amazon Linux 2 v5.5.1 running Node.js 16",
+        "SolutionStackName": "64bit Amazon Linux 2 v3.4.13 running Docker",
         "OptionSettings": [
           {
             "Namespace": "aws:autoscaling:launchconfiguration",
