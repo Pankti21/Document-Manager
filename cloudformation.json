@@ -11,6 +11,7 @@
     "ElasticBeanStalkEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
       "Properties": {
+        "OperationsRole": "arn:aws:iam::342353252634:role/beanstalk",
         "ApplicationName": "cloud-crowd",
         "EnvironmentName": "cloud-crowd-env",
         "Description": "Cloud Crowd Environment",
