@@ -9,8 +9,12 @@ import Select from "react-select";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
+  const currentUser = useSelector((state) => state.auth.currentUserData);
+  console.log("user:", currentUser);
+
   const [group, setGroup] = useState([]);
   const getGroupsAPI = "http://localhost:3001/getgroups";
 
@@ -26,9 +30,13 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get(getGroupsAPI, {
-        headers: {},
-      })
+      .post(
+        getGroupsAPI,
+        { currentUserId: currentUser.id.S },
+        {
+          headers: {},
+        }
+      )
       .then((res) => {
         console.log(res);
         setGroup(res.data.map((ele) => ({ id: ele.id.S, name: ele.name.S })));

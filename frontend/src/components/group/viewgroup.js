@@ -13,141 +13,143 @@ import { useHistory, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const ViewGroup = () => {
-    const param = useParams();
+  const param = useParams();
 
-    let history = useHistory();
+  let history = useHistory();
 
-    const getGroupFilesAPI = `http://localhost:3001/files`;
-    const getGroupUsersAPI = `http://localhost:3001/getgroupusers/${param.id}`;
+  const getGroupFilesAPI = `http://localhost:3001/files`;
+  const getGroupUsersAPI = `http://localhost:3001/getgroupusers/${param.id}`;
 
-    const [fileDetails, setFileDetails] = useState([]);
-    const [groupUsers, setGroupUsers] = useState([]);
+  const [fileDetails, setFileDetails] = useState([]);
+  const [groupUsers, setGroupUsers] = useState([]);
 
-    const addMemberHandler = (event) => {
-        history.push(`/addmember/${param.id}`);
-    };
+  const addMemberHandler = (event) => {
+    history.push(`/addmember/${param.id}`);
+  };
 
-    const removeMemberHandler = (event) => {
-        history.push(`/removemember/${param.id}`);
-    };
+  const removeMemberHandler = (event) => {
+    history.push(`/removemember/${param.id}`);
+  };
 
-    const getUrl = async (event) => {
-        const getFileUrl = `http://localhost:3001/geturl/${param.id}/${event.target.value}`;
+  const getUrl = async (event) => {
+    const getFileUrl = `http://localhost:3001/geturl/${param.id}/${event.target.value}`;
 
-        axios
-            .get(getFileUrl, {
-                headers: {},
-            })
-            .then((res) => {
-                //console.log("Res: " + JSON.stringify(res));
-                console.log("Res: " + res.data.message);
+    axios
+      .get(getFileUrl, {
+        headers: {},
+      })
+      .then((res) => {
+        //console.log("Res: " + JSON.stringify(res));
+        console.log("Res: " + res.data.message);
 
-                Swal.fire({
-                    icon: "info",
-                    title: "Your shortened URL is below:",
-                    text: res.data.message,
-                });
-            })
-            .catch((err) => {
-                console.log("Err", err);
-            });
-    };
-
-    const shortenUrl = async (event) => {
-        const getFileUrl = `http://localhost:3001/geturl/${param.id}/${event.target.value}`;
-
-        const response = await axios.get(getFileUrl, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "x-access-token":
-                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZmNjNzk2MTctNmM4MC00Y2JjLWI1MDctMzg5ZjhkNmFmZTA1MTY0ODMwNzQ2Mzc5MiIsImVtYWlsIjoidGVzdGVtYWlsQGdtYWlsLmNvbSIsImlhdCI6MTY0ODMwNzg3N30.em4F4DPLDxq18_CFLTDCK2Xln-mrwvlIMsYPtTQ-NQk",
-            },
+        Swal.fire({
+          icon: "info",
+          title: "Your shortened URL is below:",
+          text: res.data.message,
         });
+      })
+      .catch((err) => {
+        console.log("Err", err);
+      });
+  };
 
-        //console.log(response.data.message);
+  const shortenUrl = async (event) => {
+    const getFileUrl = `http://localhost:3001/geturl/${param.id}/${event.target.value}`;
 
-        const fileUrl = response.data.message;
+    const response = await axios.get(getFileUrl, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "x-access-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZmNjNzk2MTctNmM4MC00Y2JjLWI1MDctMzg5ZjhkNmFmZTA1MTY0ODMwNzQ2Mzc5MiIsImVtYWlsIjoidGVzdGVtYWlsQGdtYWlsLmNvbSIsImlhdCI6MTY0ODMwNzg3N30.em4F4DPLDxq18_CFLTDCK2Xln-mrwvlIMsYPtTQ-NQk",
+      },
+    });
 
-        //const response2 = await axios.post("http://localhost:9000/shorten", {url: fileUrl}, {});
+    //console.log(response.data.message);
 
-        console.log("url: ", fileUrl);
+    const fileUrl = response.data.message;
 
-        axios
-            .post(
-                "http://localhost:9000/shorten",
-                {
-                    url: fileUrl,
-                },
-                {
-                    headers: {},
-                }
-            )
-            .then((res) => {
-                //console.log("Res: " + JSON.stringify(res));
-                //console.log("Res: " + res.data);
+    //const response2 = await axios.post("http://localhost:9000/shorten", {url: fileUrl}, {});
 
-                Swal.fire({
-                    icon: "info",
-                    title: "Your shortened URL is below:",
-                    text: res.data,
-                });
-            })
-            .catch((err) => {
-                console.log("Err", err);
-            });
-    };
+    console.log("url: ", fileUrl);
 
-    const uploadFile = async (e) => {
-        e.preventDefault();
-        try {
-            console.log(param.id);
-            const file = e.target.file.files[0];
-            if (!file) {
-                alert("Please select one file");
-                return;
-            }
-
-            const formdata = new FormData();
-            formdata.append("file", file);
-            formdata.append("groupId", param.id);
-            //console.log("file:", formdata.files);
-            //console.log(formdata);
-            const response = await axios.post("/upload", formdata, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "x-access-token":
-                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZmNjNzk2MTctNmM4MC00Y2JjLWI1MDctMzg5ZjhkNmFmZTA1MTY0ODMwNzQ2Mzc5MiIsImVtYWlsIjoidGVzdGVtYWlsQGdtYWlsLmNvbSIsImlhdCI6MTY0ODMwNzg3N30.em4F4DPLDxq18_CFLTDCK2Xln-mrwvlIMsYPtTQ-NQk",
-                },
-            });
-
-            if (response.status === 200) {
-                getUploadedFiles();
-                console.log("success");
-            }
-        } catch (error) {
-            console.log(error);
+    axios
+      .post(
+        "http://localhost:9000/shorten",
+        {
+          url: fileUrl,
+        },
+        {
+          headers: {},
         }
-    };
+      )
+      .then((res) => {
+        //console.log("Res: " + JSON.stringify(res));
+        //console.log("Res: " + res.data);
 
-    const getUploadedFiles = () => {
-        axios.post(getGroupFilesAPI, {
-            groupId: param.id
-        }).then((res) => {
-            console.log(res.data);
-            setFileDetails(res.data.map((ele) => ({ file_name: ele.fileName, file_id: ele.id })));
-            console.log("FD: ", fileDetails);
+        Swal.fire({
+          icon: "info",
+          title: "Your shortened URL is below:",
+          text: res.data,
         });
+      })
+      .catch((err) => {
+        console.log("Err", err);
+      });
+  };
 
-        axios.get(getGroupUsersAPI).then((res) => {
-            console.log(res.data);
-            setGroupUsers(res.data);
-        });
-    }
+  const uploadFile = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(param.id);
+      const file = e.target.file.files[0];
+      if (!file) {
+        alert("Please select one file");
+        return;
+      }
 
-    useEffect(() => {
+      const formdata = new FormData();
+      formdata.append("file", file);
+      formdata.append("groupId", param.id);
+      //console.log("file:", formdata.files);
+      //console.log(formdata);
+      const response = await axios.post("/upload", formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-access-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZmNjNzk2MTctNmM4MC00Y2JjLWI1MDctMzg5ZjhkNmFmZTA1MTY0ODMwNzQ2Mzc5MiIsImVtYWlsIjoidGVzdGVtYWlsQGdtYWlsLmNvbSIsImlhdCI6MTY0ODMwNzg3N30.em4F4DPLDxq18_CFLTDCK2Xln-mrwvlIMsYPtTQ-NQk",
+        },
+      });
+
+      if (response.status === 200) {
+        //invokeLambda("sendEmail", '{"emails" : ["uppeabhishek97@gmail.com"], "message": "hello", "subject": "world"}');
         getUploadedFiles();
-    }, []);
+        console.log("success");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const getUploadedFiles = () => {
+    axios
+      .post(getGroupFilesAPI, {
+        groupId: param.id,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setFileDetails(res.data.map((ele) => ({ file_name: ele.fileName, file_id: ele.id })));
+        console.log("FD: ", fileDetails);
+      });
+
+    axios.get(getGroupUsersAPI).then((res) => {
+      console.log("GU:", res.data);
+      setGroupUsers(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getUploadedFiles();
+  }, []);
 
     return (
         <Container fluid={true}>
