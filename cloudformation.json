@@ -599,6 +599,29 @@
           }
         ]
       }
+    },
+    "IAM": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "VisualEditor0",
+              "Effect": "Deny",
+              "Action": "dynamodb:*",
+              "Resource": "arn:aws:dynamodb:*:342353252634:table/*",
+              "Condition": {
+                "StringNotEquals": {
+                  "aws:SourceVpc": { "Ref": "VPC" }
+                }
+              }
+            }
+          ]
+        },
+        "ManagedPolicyName": "cloudcrowd",
+        "Users": ["cloud-crowd"]
+      }
     }
   }
 }

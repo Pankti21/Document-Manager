@@ -22,7 +22,7 @@ import { downloadGroupFileController, getGroupFileURLController, viewGroupFileCo
 const router = express.Router();
 
 // router.get("/test", testGet);
-router.post("/signup", signUp);
+router.post("/signup", signUp);//
 router.post("/creategroup", validateToken, createGroup);
 router.post("/login", login);
 router.get("/current-user", validateToken, getCurrentUser);
