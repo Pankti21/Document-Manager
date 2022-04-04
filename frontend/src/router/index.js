@@ -8,6 +8,7 @@ import ViewGroup from "../components/group/viewgroup";
 import AddMember from "../components/group/addmember";
 import RemoveMember from "../components/group/removemember";
 import FileAnalyze from "../components/FileModule/FileAnalyze";
+import FileTranslate from "../components/FileModule/FileTranslate";
 
 function AppRouter() {
     return (
@@ -25,6 +26,9 @@ function AppRouter() {
                 </Route>
                 <Route exact path="/analyze/:groupId/:fileId">
                     <FileAnalyze />
+                </Route>
+                <Route exact path="/translate/:groupId/:fileId">
+                    <FileTranslate />
                 </Route>
                 <Route exact path="/creategroup">
                     <CreateGroup />

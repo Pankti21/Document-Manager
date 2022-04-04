@@ -160,7 +160,8 @@ const ViewGroup = () => {
                                 <th>File name</th>
                                 <th>View file</th>
                                 <th>Download File</th>
-                                 <th>Extract Text</th>
+                                <th>Extract Text</th>
+                                <th>Translate</th>
                                 <th>Get URL</th>
                                 <th>Get Shorten URL</th>
                             </tr>
@@ -189,6 +190,11 @@ const ViewGroup = () => {
                                         <td>
                                             <a href={`/analyze/${param.id}/${file.file_id}`}>
                                                 <Button variant="secondary">Extract</Button>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href={`/translate/${param.id}/${file.file_id}`}>
+                                                <Button variant="secondary">Translate</Button>
                                             </a>
                                         </td>
                                         <td>
