@@ -1,11 +1,10 @@
 import express from "express";
 import testGet from "../controllers/test.js";
-import { shortner } from "../controllers/shortner.js";
-import { shortenLookUp } from "../controllers/shortenLookUp.js";
+import {shortner} from "../controllers/shortner.js";
+import {shortenLookUp} from "../controllers/shortenLookUp.js";
 
 const router = express.Router();
 
-router.get("/test", testGet);
 router.post("/shorten", shortner);
 router.get("/:shortendId", shortenLookUp);
 
