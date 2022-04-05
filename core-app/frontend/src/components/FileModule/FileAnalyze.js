@@ -77,7 +77,7 @@ const FileAnalyze = () => {
     return (
         <div style={{padding: "64px"}} className="container">
             <Image
-                src={`/view/${params.groupId}/${params.fileId}`}
+                src={`${window.location.origin}/api/view/${params.groupId}/${params.fileId}`}
                 style={{
                     display: "block",
                     maxHeight: "500px",
@@ -91,13 +91,14 @@ const FileAnalyze = () => {
                     <AccordionHeader>Lines &middot;&nbsp; <b>{analysisResponse.lines.length}</b></AccordionHeader>
                     <AccordionBody>
                         <ListGroup>
-                            {analysisResponse.lines.map((line) => {
+                            {analysisResponse?.lines && Array.isArray(analysisResponse
+                                .lines) ? analysisResponse.lines.map((line) => {
                                 return (
                                     <ListGroupItem>
                                         {line.text}
                                     </ListGroupItem>
                                 )
-                            })}
+                            }) : null}
                         </ListGroup>
                     </AccordionBody>
                 </AccordionItem>
@@ -106,13 +107,13 @@ const FileAnalyze = () => {
                     <AccordionHeader>Words &middot;&nbsp; <b>{analysisResponse.words.length}</b></AccordionHeader>
                     <AccordionBody>
                         <ListGroup>
-                            {analysisResponse.words.map((word) => {
+                            {analysisResponse?.words && Array.isArray(analysisResponse.words) ? analysisResponse.words.map((word) => {
                                 return (
                                     <ListGroupItem>
                                         {word.text}
                                     </ListGroupItem>
                                 )
-                            })}
+                            }) : null}
                         </ListGroup>
                     </AccordionBody>
                 </AccordionItem>

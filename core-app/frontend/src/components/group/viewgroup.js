@@ -197,13 +197,13 @@ const ViewGroup = () => {
                   <tr>
                     <td>{file.file_name}</td>
                     <td>
-                      <a target="_blank" href={`/view/${param.id}/${file.file_id}`} rel="noreferrer">
+                      <a target="_blank" href={`/api/view/${param.id}/${file.file_id}`} rel="noreferrer">
                         {" "}
                         <Button variant="secondary">View</Button>{" "}
                       </a>
                     </td>
                     <td>
-                      <a target="_blank" href={`/download/${param.id}/${file.file_id}`} rel="noreferrer">
+                      <a target="_blank" href={`/api/download/${param.id}/${file.file_id}`} rel="noreferrer">
                         {" "}
                         <Button variant="secondary">Download</Button>{" "}
                       </a>

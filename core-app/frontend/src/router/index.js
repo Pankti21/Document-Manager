@@ -49,9 +49,6 @@ function AppRouter() {
                 <CommonRoute exact path={"/"}>
                     <Index/>
                 </CommonRoute>
-                <Route path="*">
-                    <div>404 Not Found</div>
-                </Route>
             </Switch>
         </Router>
     );

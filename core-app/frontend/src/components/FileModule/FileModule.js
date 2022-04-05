@@ -86,13 +86,13 @@ const FileModule = () => {
                             <td>
                                 <a
                                     target="_blank"
-                                    href={`/view/${file.id}`}
+                                    href={`/api/view/${file.id}`}
                                     rel="noreferrer"
                                 > <Button variant="secondary">View</Button>{' '}</a>
                             </td>
                             <td><a
                                 target="_blank"
-                                href={`/download/${file.id}`}
+                                href={`/api/download/${file.id}`}
                                 rel="noreferrer"
                             > <Button variant="secondary">Download</Button>{' '}</a>
                             </td>
