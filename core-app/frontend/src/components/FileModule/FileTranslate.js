@@ -161,14 +161,14 @@ const FileTranslate = () => {
                 }}
             >
                 <ListGroup variant="flush">
-                    {originalAndTranslatedText.map((listItem, index) => {
+                    {Array.isArray(originalAndTranslatedText) ? originalAndTranslatedText.map((listItem, index) => {
                         return (
                             <ListGroupItem key={index}>
                                 <p style={{margin: "0px"}}><b>{listItem.text}</b></p>
                                 <p style={{margin: "0px"}}>{listItem.translatedText}</p>
                             </ListGroupItem>
                         )
-                    })}
+                    }): null}
                 </ListGroup>
             </Card>
         </div>
