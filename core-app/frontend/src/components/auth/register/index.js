@@ -41,10 +41,9 @@ function Register() {
 
     useEffect(() => {
         if (isUserRegistrationDone) {
-            //   history.push("/home");
             if (!isError(userRegistrationData)) {
                 reset();
-                //  route to next page
+                history.push("/home");
             }
         }
     }, [isUserRegistrationDone]);

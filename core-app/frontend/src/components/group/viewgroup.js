@@ -21,9 +21,9 @@ const ViewGroup = () => {
 
   let history = useHistory();
 
-  const getGroupFilesAPI = `http://localhost:3001/files`;
-  const getGroupUsersAPI = `http://localhost:3001/getgroupusers/${param.id}`;
-  const getGroupAdmin = `http://localhost:3001/getgroupadmin/${param.id}`;
+  const getGroupFilesAPI = `/files`;
+  const getGroupUsersAPI = `/getgroupusers/${param.id}`;
+  const getGroupAdmin = `/getgroupadmin/${param.id}`;
 
   const [fileDetails, setFileDetails] = useState([]);
   const [groupUsers, setGroupUsers] = useState([]);
@@ -40,7 +40,7 @@ const ViewGroup = () => {
   };
 
   const getUrl = async (event) => {
-    const getFileUrl = `http://localhost:3001/geturl/${param.id}/${event.target.value}`;
+    const getFileUrl = `/geturl/${param.id}/${event.target.value}`;
 
     axios
       .get(getFileUrl, {
@@ -62,7 +62,7 @@ const ViewGroup = () => {
   };
 
   const shortenUrl = async (event) => {
-    const getFileUrl = `http://localhost:3001/geturl/${param.id}/${event.target.value}`;
+    const getFileUrl = `/geturl/${param.id}/${event.target.value}`;
 
     const response = await axios.get(getFileUrl, {
       headers: {},
@@ -197,13 +197,13 @@ const ViewGroup = () => {
                   <tr>
                     <td>{file.file_name}</td>
                     <td>
-                      <a target="_blank" href={`http://localhost:3001/view/${param.id}/${file.file_id}`} rel="noreferrer">
+                      <a target="_blank" href={`/view/${param.id}/${file.file_id}`} rel="noreferrer">
                         {" "}
                         <Button variant="secondary">View</Button>{" "}
                       </a>
                     </td>
                     <td>
-                      <a target="_blank" href={`http://localhost:3001/download/${param.id}/${file.file_id}`} rel="noreferrer">
+                      <a target="_blank" href={`/download/${param.id}/${file.file_id}`} rel="noreferrer">
                         {" "}
                         <Button variant="secondary">Download</Button>{" "}
                       </a>
@@ -219,7 +219,7 @@ const ViewGroup = () => {
                       </a>
                     </td>
                     <td>
-                      {/* <a target="_blank" href={`http://localhost:3001/geturl/${param.id}/${file.file_id}`} rel="noreferrer"> */}{" "}
+                      {/* <a target="_blank" href={`/geturl/${param.id}/${file.file_id}`} rel="noreferrer"> */}{" "}
                       <Button variant="secondary" value={`${file.file_id}`} onClick={getUrl}>
                         URL
                       </Button>{" "}
