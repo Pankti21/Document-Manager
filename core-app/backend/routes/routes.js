@@ -14,6 +14,7 @@ import getUsers from "../controllers/getUserList.js";
 import getGroups from "../controllers/getGroups.js";
 import getGroupFiles from "../controllers/getGroupFiles.js";
 import getGroupUsers from "../controllers/getGroupUsers.js";
+import getGroupAdmin from "../controllers/getGroupAdmin.js";
 import getNonGroupUsers from "../controllers/getNonGroupUsers.js";
 import updateGroupUsers from "../controllers/updateGroupUsers.js";
 import {getCurrentUser, login} from "../controllers/auth.js";
@@ -36,6 +37,7 @@ router.get("/getgroupfiles/:id", validateToken, getGroupFiles);
 router.get("/getgroupusers/:id", validateToken, getGroupUsers);
 router.get("/getnongroupusers/:id", validateToken, getNonGroupUsers);
 router.post("/updategroupusers/:id", validateToken, updateGroupUsers);
+router.get("/getgroupadmin/:id", getGroupAdmin);
 
 router.post("/files", listFilesController);
 router.post("/upload", addFileController);
