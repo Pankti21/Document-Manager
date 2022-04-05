@@ -6,14 +6,16 @@ function CommonRoute({path, children}) {
     const currentUser = useSelector((state) => state.auth.currentUserData);
     const history = useHistory();
 
-    if (path !== "/login" && isError(currentUser)) {
-        history.push("/login");
-        return null;
-    }
+    if (path !== "/register") {
+        if (path !== "/login" && isError(currentUser)) {
+            history.push("/login");
+            return null;
+        }
 
-    if (path === "/login" && !isError(currentUser)) {
-        history.push("/home");
-        return null;
+        if (path === "/login" && !isError(currentUser) && Object.keys(currentUser).length > 0) {
+            history.push("/home");
+            return null;
+        }
     }
 
     return (

@@ -6,11 +6,9 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {loginUser} from "../../../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {useHistory} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 function Login() {
-    const history = useHistory();
-
     const schema = yup
         .object({
             email: validateYupSchema("email", "email"),
@@ -61,9 +59,18 @@ function Login() {
                 </Form.Group>
 
                 <p className="errors">{errors?.password?.message}</p>
-                <Button variant="primary" type="submit" className="mt-2">
-                    Login
-                </Button>
+                <div>
+                    <Button variant="primary" type="submit" className="mt-2">
+                        Login
+                    </Button>
+                </div>
+                <div>
+                    <Button variant="primary" type="submit" className="mt-2">
+                        <Link to="/register" className="btn btn-primary">
+                            Register
+                        </Link>
+                    </Button>
+                </div>
             </form>
         </div>
     );
