@@ -14,14 +14,12 @@ const getGroupFiles = async (request, response) => {
     };
 
     try {
-        console.log("trying");
         const data = await ddbClient.send(new QueryCommand(queryParams));
 
         if (data.Items.length === 0) {
             return response.status(400).send({data: "No files in the group"});
         }
 
-        console.log("tried");
         return response.send(data.Items);
     } catch (error) {
         return error;

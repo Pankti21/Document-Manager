@@ -25,8 +25,6 @@ const RemoveMember = () => {
   const [groupDetails, setGroupDetails] = useState({});
 
 
-  //console.log("hello: ", users);
-
   const getUsersAPI = "/getuserlist";
   const getNonGroupUsersAPI = `/getnongroupusers/${param.id}`;
   const getGroupUsersAPI = `/getgroupusers/${param.id}`;

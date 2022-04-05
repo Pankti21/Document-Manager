@@ -16,71 +16,42 @@ const AddMember = () => {
     const [userNames, setUserNames] = useState();
     const [groupUsers, setGroupUsers] = useState([]);
     const [groupMembers, setGroupMembers] = useState({});
-    const [groupName, setGroupName] = useState();
-    const [groupDetails, setGroupDetails] = useState({});
 
 
-    const getUsersAPI = "/getuserlist";
     const getNonGroupUsersAPI = `/getnongroupusers/${param.id}`;
     const getGroupUsersAPI = `/getgroupusers/${param.id}`;
     const updateGroupUsersAPI = `/updategroupusers/${param.id}`;
 
     let userId = [];
-    let userName = [];
     let updatedUsers = [];
-    let updatedUsersString = "";
 
     const addMembers = (selectedOption) => {
-        // console.log("helo 1");
         const userName = [];
         for (let i = 0; i < selectedOption.length; i++) {
-            //   console.log("hello ");
-            //   console.log(selectedOption[i].value);
             userId[i] = selectedOption[i].value;
             userName[i] = selectedOption[i].label;
         }
-        console.log(userId);
         setUserIds(userId);
         setUserNames(userName);
-        // console.log(userName);
         setGroupMembers({user_id: userId, user_name: userName});
-        //setGroupMembers(event.target.value);
     };
 
     const AddNow = async (event) => {
         event.preventDefault();
-        console.log("Users: ", userIds);
-        // console.log(JSON.parse(groupMembers));
-        event.preventDefault();
-
         await axios
             .get(getGroupUsersAPI, {
                 headers: {},
             })
             .then((res) => {
                 setGroupUsers(res.data);
-                console.log("Group users: ", res.data);
-
                 for (let i = 0; i < userIds.length; i++) {
                     updatedUsers[i] = {user_id: userIds[i], user_name: userNames[i]};
                 }
 
-                console.log("Updated users: 1: ", updatedUsers);
-
                 let len = updatedUsers.length;
-                console.log("GU: ", groupUsers);
                 for (let i = 0; i < res.data.length; i++) {
                     updatedUsers[len + i] = {user_id: res.data[i].user_id, user_name: res.data[i].user_name};
                 }
-
-                console.log("Updated users: ", updatedUsers);
-
-                // for (let i = 0; i < updatedUsers.length; i++) {
-                //   updatedUsersString += updatedUsers[i];
-                //   updatedUsersString += ",";
-                // }
-                // updatedUsersString = updatedUsersString.substring(0, updatedUsersString.length - 1);
-                // console.log("Updated users String: ", updatedUsersString);
             })
             .catch((err) => {
                 console.log("Err", err);
@@ -89,16 +60,9 @@ const AddMember = () => {
         axios
             .post(
                 updateGroupUsersAPI,
-                {updatedUsers: updatedUsers},
-                {
-                    headers: {},
-                }
+                {updatedUsers: updatedUsers}
             )
             .then((res) => {
-                console.log("output: ", res);
-                ///setUsers(res.data);
-                //setUsers(res.data.map((ele) => ({ value: ele.id.S, label: ele.first_name.S + " " + ele.last_name.S })));
-                //console.log(users);
                 Swal.fire({
                     icon: "success",
                     title: "Members added successfully",
@@ -113,14 +77,9 @@ const AddMember = () => {
 
     useEffect(() => {
         axios
-            .get(getNonGroupUsersAPI, {
-                headers: {},
-            })
+            .get(getNonGroupUsersAPI)
             .then((res) => {
-                //console.log("Users: ", res.data);
-                //setUsers(res.data);
                 setUsers(res.data.map((ele) => ({value: ele.id.S, label: ele.first_name.S + " " + ele.last_name.S})));
-                //console.log(users);
             })
             .catch((err) => {
                 console.log("Err", err);

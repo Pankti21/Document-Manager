@@ -12,25 +12,19 @@ const CreateGroup = () => {
     let history = useHistory();
 
     const currentUser = useSelector((state) => state.auth.currentUserData);
-    console.log("user:", currentUser);
 
     const [users, setUsers] = useState([]);
     const [groupMembers, setGroupMembers] = useState({});
     const [groupName, setGroupName] = useState();
     const [groupDetails, setGroupDetails] = useState({});
 
-    //console.log("hello: ", users);
-
     const getUsersAPI = "/getuserlist";
     const createGroupAPI = "/creategroup";
 
     const addMembers = (selectedOption) => {
-        console.log("helo 1");
         const userId = [];
         const userName = [];
         for (let i = 0; i < selectedOption.length; i++) {
-            console.log("hello ");
-            console.log(selectedOption[i].value);
             userId[i] = selectedOption[i].value;
             userName[i] = selectedOption[i].label;
         }
@@ -38,21 +32,14 @@ const CreateGroup = () => {
             userId[userId.length] = currentUser.id.S;
             userName[userName.length] = currentUser.first_name.S + " " + currentUser.last_name.S;
         }
-        console.log(userId);
-        console.log(userName);
         setGroupMembers({user_id: userId, user_name: userName});
-        //setGroupMembers(event.target.value);
     };
 
     const handleGroupName = (event) => {
-        console.log(event.target.value);
         setGroupName(event.target.value);
     };
 
     const createGroup = (event) => {
-        event.preventDefault();
-        console.log(groupMembers);
-        // console.log(JSON.parse(groupMembers));
         event.preventDefault();
 
         axios
@@ -69,8 +56,6 @@ const CreateGroup = () => {
                 }
             )
             .then((res) => {
-                console.log("Res: " + JSON.stringify(res));
-                console.log("Res: " + res.data);
                 Swal.fire({
                     icon: "success",
                     title: `${groupName} created successfully`,
@@ -79,7 +64,7 @@ const CreateGroup = () => {
                 history.push(`/home`);
             })
             .catch((err) => {
-                console.log("Err", err);
+                throw err;
             });
     };
 
@@ -90,9 +75,8 @@ const CreateGroup = () => {
             })
             .then((res) => {
                 let resUsers = [];
-                console.log("get users:", res.data);
                 for (let i = 0; i < res.data.length; i++) {
-                    if (res.data[i].id.S != currentUser.id.S) {
+                    if (res.data[i].id.S !== currentUser.id.S) {
                         resUsers.push(res.data[i]);
                     }
                 }

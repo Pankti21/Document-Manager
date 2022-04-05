@@ -27,7 +27,6 @@ export const listFilesController = async (req, res) => {
 
 export const addFileController = async (req, res) => {
     try {
-        //console.log(req);
         // get form data from request
         const file = req.files.file;
         const name = file.name;
@@ -180,7 +179,7 @@ export const translateFileController = async (req, res) => {
             },
             true
         );
-        
+
 
         if (!fileUrlResponse || !fileUrlResponse.file_key) {
             res.status(404).send("Not found");
@@ -190,7 +189,7 @@ export const translateFileController = async (req, res) => {
 
         const blocks = await analyzeFile(key);
 
-        if(!blocks){
+        if (!blocks) {
             return res.status(500).send("error");
         }
         const blockLines = blocks.filter(({BlockType}) => BlockType === "LINE").map((block) => {

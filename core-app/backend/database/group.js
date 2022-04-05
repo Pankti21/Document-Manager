@@ -14,8 +14,7 @@ export const createGroupTable = async () => {
     try {
         return await ddbClient.send(new CreateTableCommand(params));
     } catch (err) {
-        console.log(err)
-        return err;
+        throw err;
     }
 }
 
