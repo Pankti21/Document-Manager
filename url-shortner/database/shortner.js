@@ -12,7 +12,6 @@ export const createShortnerTable = async () => {
     try {
         return await ddbClient.send(new CreateTableCommand(params));
     } catch (err) {
-        console.log(err);
         return err;
     }
 };
@@ -24,7 +23,6 @@ export function generateId(size) {
     for (let i = 0; i < size; i++) {
         generatedId += alphaNumeric.charAt(Math.floor(Math.random() * alphaNumericSize));
     }
-    console.log("GenId: ", generatedId);
     return generatedId;
 }
 
@@ -39,10 +37,7 @@ export const createEntry = async (origUrl, id, shortendUrl) => {
     };
 
     try {
-        console.log("creating entry in shorten");
-        console.log(params);
         const data = await ddbClient.send(new PutItemCommand(params));
-        console.log("created entry in shorten");
     } catch (error) {
         console.log(error);
         return error;

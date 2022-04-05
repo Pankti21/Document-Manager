@@ -3,7 +3,7 @@ import bodyparser from "body-parser";
 import router from "./routes/routes.js";
 import cors from "cors";
 
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 80;
 
 const app = express();
 

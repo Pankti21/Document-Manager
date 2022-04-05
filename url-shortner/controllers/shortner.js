@@ -5,7 +5,7 @@ export const shortner = async (req, res) => {
 
     const shortId = generateId(7);
 
-    const shortendUrl = window.location.origin + "/" + shortId;
+    const shortendUrl = `http://${req.get('host')}/${shortId}`;
 
     createEntry(origUrl, shortId, shortendUrl);
 
