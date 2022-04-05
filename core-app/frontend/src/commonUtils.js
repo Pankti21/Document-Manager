@@ -54,7 +54,6 @@ export const showError = function (error) {
 
 export const isError = (error) => {
     return !!(error && error.response && error.response.status && (error.response.status !== 200 && error.response.status !== 201));
-
 }
 
 export const isLocalHost = () => {

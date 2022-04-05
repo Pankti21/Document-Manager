@@ -6,7 +6,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {useDispatch, useSelector} from "react-redux";
 import {registerUser} from "../../../redux/actions";
 import {useEffect} from "react";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 function Register() {
     const history = useHistory();
@@ -79,9 +79,18 @@ function Register() {
                 </Form.Group>
 
                 <p className="errors">{errors?.password?.message}</p>
-                <Button variant="primary" type="submit" className="mt-2">
-                    Register
-                </Button>
+                <div>
+                    <Button variant="primary" type="submit" className="mt-2">
+                        Register
+                    </Button>
+                </div>
+                <div>
+                    <Button variant="primary" type="submit" className="mt-2">
+                        <Link to="/login" className="btn btn-primary">
+                            Login
+                        </Link>
+                    </Button>
+                </div>
             </form>
         </div>
     );
