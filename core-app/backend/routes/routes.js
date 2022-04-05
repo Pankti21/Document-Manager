@@ -41,12 +41,12 @@ router.get("/getgroupadmin/:id", getGroupAdmin);
 
 router.post("/files", listFilesController);
 router.post("/upload", addFileController);
-router.get("/view/:id", viewFileController);
-router.get("/download/:id", downloadFileController);
+router.get("/view/:groupId/:id", viewFileController);
+router.get("/download/:groupId/:id", downloadFileController);
 router.get("/analyze/:groupId/:id", analyzeFileWithTextractController);
 router.post("/translate/:groupId/:id", translateFileController);
-router.get("/view/:group/:id", viewGroupFileController);
-router.get("/download/:group/:id", downloadGroupFileController);
+// router.get("/view/:group/:id", viewGroupFileController);
+// router.get("/download/:group/:id", downloadGroupFileController);
 router.get("/geturl/:group/:id", getGroupFileURLController);
 
 export default router;

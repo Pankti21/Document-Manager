@@ -7,7 +7,7 @@ export const analyzeFile = async (fileName) => {
         const params = {
             Document: {
                 S3Object: {
-                    Bucket: "cloudcrowd2",
+                    Bucket: "cloud-crowd",
                     Name: fileName
                 }
             },
@@ -18,6 +18,7 @@ export const analyzeFile = async (fileName) => {
         const result = await client.send(command);
 
         return result.Blocks;
+    
     } catch (err) {
         console.log(err);
     }
