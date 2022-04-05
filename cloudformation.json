@@ -11,6 +11,7 @@
     "ElasticBeanStalkEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
       "Properties": {
+        "OperationsRole": "arn:aws:iam::342353252634:role/beanstalk",
         "ApplicationName": "cloud-crowd",
         "EnvironmentName": "cloud-crowd-env",
         "Description": "Cloud Crowd Environment",
@@ -24,12 +25,16 @@
           {
             "Namespace": "aws:ec2:vpc",
             "OptionName": "VPCId",
-            "Value": { "Ref": "VPC" }
+            "Value": {
+              "Ref": "VPC"
+            }
           },
           {
             "Namespace": "aws:ec2:vpc",
             "OptionName": "Subnets",
-            "Value": { "Ref": "BeanStalkPublicSubnet" }
+            "Value": {
+              "Ref": "BeanStalkPublicSubnet"
+            }
           }
         ]
       },
@@ -460,7 +465,10 @@
           "Ref": "BeanStalkPublicSubnet"
         },
         "AllocationId": {
-          "Fn::GetAtt": ["NatPublicIP", "AllocationId"]
+          "Fn::GetAtt": [
+            "NatPublicIP",
+            "AllocationId"
+          ]
         }
       }
     },
@@ -567,7 +575,10 @@
             "FromPort": 443,
             "ToPort": 443,
             "SourceSecurityGroupId": {
-              "Fn::GetAtt": ["CloudCrowdPublicSecurityGroup", "GroupId"]
+              "Fn::GetAtt": [
+                "CloudCrowdPublicSecurityGroup",
+                "GroupId"
+              ]
             }
           }
         ],
@@ -613,14 +624,18 @@
               "Resource": "arn:aws:dynamodb:*:342353252634:table/*",
               "Condition": {
                 "StringNotEquals": {
-                  "aws:SourceVpc": { "Ref": "VPC" }
+                  "aws:SourceVpc": {
+                    "Ref": "VPC"
+                  }
                 }
               }
             }
           ]
         },
         "ManagedPolicyName": "cloudcrowd",
-        "Users": ["cloud-crowd"]
+        "Users": [
+          "cloud-crowd"
+        ]
       }
     }
   }
