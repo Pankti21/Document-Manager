@@ -8,6 +8,14 @@
       },
       "DependsOn": "BeanStalkPublicSubnet"
     },
+    "ElasticBeanStalkURLShortenerApplication": {
+      "Type": "AWS::ElasticBeanstalk::Application",
+      "Properties": {
+        "ApplicationName": "cloud-crowd-url-shortener",
+        "Description": "Cloud Crowd URL Shortener Application"
+      },
+      "DependsOn": "BeanStalkPublicSubnet"
+    },
     "ElasticBeanStalkEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
       "Properties": {
@@ -40,14 +48,6 @@
       },
       "DependsOn": "ElasticBeanStalkApplication"
     },
-    "ElasticBeanStalkURLShortenerApplication": {
-      "Type": "AWS::ElasticBeanstalk::Application",
-      "Properties": {
-        "ApplicationName": "cloud-crowd-url-shortener",
-        "Description": "Cloud Crowd URL Shortener Application"
-      },
-      "DependsOn": "URLShortenerPrivateSubnet"
-    },
     "ElasticBeanStalkURLShortenerEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
       "Properties": {
@@ -74,7 +74,7 @@
             "Namespace": "aws:ec2:vpc",
             "OptionName": "Subnets",
             "Value": {
-              "Ref": "URLShortenerPrivateSubnet"
+              "Ref": "BeanStalkPublicSubnet"
             }
           }
         ]
