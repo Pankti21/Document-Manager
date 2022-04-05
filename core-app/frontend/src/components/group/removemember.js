@@ -27,10 +27,10 @@ const RemoveMember = () => {
 
   //console.log("hello: ", users);
 
-  const getUsersAPI = "http://localhost:3001/getuserlist";
-  const getNonGroupUsersAPI = `http://localhost:3001/getnongroupusers/${param.id}`;
-  const getGroupUsersAPI = `http://localhost:3001/getgroupusers/${param.id}`;
-  const updateGroupUsersAPI = `http://localhost:3001/updategroupusers/${param.id}`;
+  const getUsersAPI = "/getuserlist";
+  const getNonGroupUsersAPI = `/getnongroupusers/${param.id}`;
+  const getGroupUsersAPI = `/getgroupusers/${param.id}`;
+  const updateGroupUsersAPI = `/updategroupusers/${param.id}`;
 
   let userId = [];
   let userName = [];

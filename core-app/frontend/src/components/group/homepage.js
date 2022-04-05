@@ -16,7 +16,7 @@ const HomePage = () => {
   console.log("user:", currentUser);
 
   const [group, setGroup] = useState([]);
-  const getGroupsAPI = "http://localhost:3001/getgroups";
+  const getGroupsAPI = "/getgroups";
 
   let history = useHistory();
 
