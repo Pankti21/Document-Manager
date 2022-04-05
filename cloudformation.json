@@ -40,6 +40,47 @@
       },
       "DependsOn": "ElasticBeanStalkApplication"
     },
+    "ElasticBeanStalkURLShortenerApplication": {
+      "Type": "AWS::ElasticBeanstalk::Application",
+      "Properties": {
+        "ApplicationName": "cloud-crowd-url-shortener",
+        "Description": "Cloud Crowd URL Shortener Application"
+      },
+      "DependsOn": "URLShortenerPrivateSubnet"
+    },
+    "ElasticBeanStalkURLShortenerEnvironment": {
+      "Type": "AWS::ElasticBeanstalk::Environment",
+      "Properties": {
+        "CNAMEPrefix": "cloud-crowd-url-shortener",
+        "OperationsRole": "arn:aws:iam::342353252634:role/beanstalk",
+        "ApplicationName": "cloud-crowd-url-shortener",
+        "EnvironmentName": "cloud-crowd-env-url-shortener",
+        "Description": "Cloud Crowd URL Shortener Environment",
+        "SolutionStackName": "64bit Amazon Linux 2 v3.4.13 running Docker",
+        "OptionSettings": [
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": "aws-elasticbeanstalk-ec2-role"
+          },
+          {
+            "Namespace": "aws:ec2:vpc",
+            "OptionName": "VPCId",
+            "Value": {
+              "Ref": "VPC"
+            }
+          },
+          {
+            "Namespace": "aws:ec2:vpc",
+            "OptionName": "Subnets",
+            "Value": {
+              "Ref": "URLShortenerPrivateSubnet"
+            }
+          }
+        ]
+      },
+      "DependsOn": "ElasticBeanStalkURLShortenerApplication"
+    },
     "DynamoDBGroupTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
@@ -361,7 +402,7 @@
       },
       "DependsOn": "VPC"
     },
-    "DynamoDBPrivateSubnet1": {
+    "URLShortenerPrivateSubnet": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "VpcId": {
@@ -409,7 +450,7 @@
           }
         ]
       },
-      "DependsOn": "DynamoDBPrivateSubnet1"
+      "DependsOn": "URLShortenerPrivateSubnet"
     },
     "InternetGateway": {
       "Type": "AWS::EC2::InternetGateway"
@@ -499,11 +540,11 @@
         "DestinationCidrBlock": "0.0.0.0/0"
       }
     },
-    "DynamoDBPrivateSubnet1RouteTableAssociation": {
+    "URLShortenerPrivateSubnetRouteTableAssociation": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "SubnetId": {
-          "Ref": "DynamoDBPrivateSubnet1"
+          "Ref": "URLShortenerPrivateSubnet"
         },
         "RouteTableId": {
           "Ref": "PrivateRouteTable"
@@ -580,6 +621,16 @@
                 "GroupId"
               ]
             }
+          }, {
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "SourceSecurityGroupId": {
+              "Fn::GetAtt": [
+                "CloudCrowdPublicSecurityGroup",
+                "GroupId"
+              ]
+            }
           }
         ],
         "SecurityGroupEgress": {
@@ -603,7 +654,7 @@
         "Description": "Description of Dynamodb subnet group",
         "SubnetIds": [
           {
-            "Ref": "DynamoDBPrivateSubnet1"
+            "Ref": "URLShortenerPrivateSubnet"
           },
           {
             "Ref": "DynamoDBPrivateSubnet2"

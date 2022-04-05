@@ -10,9 +10,9 @@ const app = express();
 app.use(cors());
 
 app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+    console.log(`Server listening on ${PORT}`);
 });
 
 app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.urlencoded({extended: false}));
 app.use("/", router);
