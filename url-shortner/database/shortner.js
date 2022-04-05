@@ -2,7 +2,7 @@ import { ddbClient, ProvisionedThroughput } from "./index.js";
 import { PutItemCommand, QueryCommand, CreateTableCommand } from "@aws-sdk/client-dynamodb";
 
 const params = {
-  TableName: "shortner",
+  TableName: "shortened_url",
   KeySchema: [{ AttributeName: "shortend_id", KeyType: "HASH" }],
   AttributeDefinitions: [{ AttributeName: "shortend_id", AttributeType: "S" }],
   ProvisionedThroughput: { ...ProvisionedThroughput },
@@ -30,7 +30,7 @@ export function generateId(size) {
 
 export const createEntry = async (origUrl, id, shortendUrl) => {
   const params = {
-    TableName: "shortner",
+    TableName: "shortened_url",
     Item: {
       url: { S: origUrl },
       shortend_id: { S: id },

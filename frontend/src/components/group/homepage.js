@@ -47,37 +47,52 @@ const HomePage = () => {
       });
   }, []);
 
-  return (
-    <div>
-      <Container fluid={true} className="blue-main-gradient py-5 p-2">
-        <h1 className="col-12 m-4">Groups</h1>
-        <Row xs={1} md={4} className="g-4" style={{ marginLeft: "5px" }}>
-          {Array.from({ length: 1 }).map((_, idx) =>
-            group.map((r) => (
-              <Col>
-                <Card className="address-card" border="info" style={{ width: "18rem", height: "13rem" }}>
-                  <Card.Body>
-                    <Card.Title>{r.name}</Card.Title>
-                    <Card.Text>{r.id}</Card.Text>
-                  </Card.Body>
-                  <Card.Footer>
-                    <Button value={r.id} onClick={ViewGroup}>
-                      View
-                    </Button>
-                  </Card.Footer>
-                </Card>
-              </Col>
-            ))
-          )}
-        </Row>
+  if (group.length) {
+    return (
+      <div>
+        <Container fluid={true} className="blue-main-gradient py-5 p-2">
+          <h1 className="col-12 m-4">Groups</h1>
+          <Row xs={1} md={4} className="g-4" style={{ marginLeft: "5px" }}>
+            {Array.from({ length: 1 }).map((_, idx) =>
+              group.map((r) => (
+                <Col>
+                  <Card className="address-card" border="info" style={{ width: "18rem", height: "13rem" }}>
+                    <Card.Body>
+                      <Card.Title>{r.name}</Card.Title>
+                      <Card.Text>{r.id}</Card.Text>
+                    </Card.Body>
+                    <Card.Footer>
+                      <Button value={r.id} onClick={ViewGroup}>
+                        View
+                      </Button>
+                    </Card.Footer>
+                  </Card>
+                </Col>
+              ))
+            )}
+          </Row>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+            <button type="submit" onClick={handleCreateGroup} style={{ backgroundColor: "blue", color: "white", maxWidth: "10%" }}>
+              create new group
+            </button>
+          </div>
+        </Container>
+      </div>
+    );
+  } else {
+    return (
+      <Container>
         <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
-          <button onClick={handleCreateGroup} style={{ backgroundColor: "blue", color: "white", maxWidth: "10%" }}>
-            create new group
-          </button>
-        </div>
+          <h1>You do not have any groups</h1>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+            <button type="submit" onClick={handleCreateGroup} style={{ backgroundColor: "blue", color: "white", maxWidth: "10%" }}>
+              Create New Group
+            </button>
+          </div>
       </Container>
-    </div>
-  );
+    );
+  }
 };
 
 export default HomePage;

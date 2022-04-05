@@ -164,13 +164,13 @@
         "TableName": "shortened_url",
         "KeySchema": [
           {
-            "AttributeName": "file_id",
+            "AttributeName": "shortend_id",
             "KeyType": "HASH"
           }
         ],
         "AttributeDefinitions": [
           {
-            "AttributeName": "file_id",
+            "AttributeName": "shortend_id",
             "AttributeType": "S"
           }
         ],
@@ -179,7 +179,7 @@
             "IndexName": "url_file_index",
             "KeySchema": [
               {
-                "AttributeName": "file_id",
+                "AttributeName": "shortend_id",
                 "KeyType": "HASH"
               }
             ],

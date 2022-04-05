@@ -14,7 +14,7 @@ export const shortenLookUp = async (request, response) => {
       ":id": { S: shortId },
     },
     ProjectionExpression: "#orig_url, shortend_url",
-    TableName: "shortner",
+    TableName: "shortened_url",
     ExpressionAttributeNames: {
       "#orig_url": "url",
     },

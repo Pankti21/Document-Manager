@@ -7,10 +7,14 @@ import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 const RemoveMember = () => {
   let history = useHistory();
   const param = useParams();
+
+  const currentUser = useSelector((state) => state.auth.currentUserData);
+  console.log("user:", currentUser);
 
   const [users, setUsers] = useState([]);
   const [userIds, setUserIds] = useState();
@@ -19,6 +23,7 @@ const RemoveMember = () => {
   const [groupMembers, setGroupMembers] = useState();
   const [groupName, setGroupName] = useState();
   const [groupDetails, setGroupDetails] = useState({});
+
 
   //console.log("hello: ", users);
 
