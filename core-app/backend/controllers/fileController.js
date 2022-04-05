@@ -57,7 +57,6 @@ export const addFileController = async (req, res) => {
         };
 
         await addGroupFile(fileRecord);
-
         res.status(200).send(fileRecord);
     } catch (err) {
         console.log(err);

@@ -2,7 +2,6 @@ import {ddbClient} from "../database/index.js";
 import {PutItemCommand, QueryCommand} from "@aws-sdk/client-dynamodb";
 import {getHashedPassword, SECRET_KEY} from "../utils/auth.js";
 import {v4 as uuidv4} from "uuid";
-import jwt from "jsonwebtoken";
 import {invokeLambda} from "../services/lambda/email.js";
 
 const signUp = async (request, response) => {
@@ -51,7 +50,7 @@ const signUp = async (request, response) => {
         try {
             const data = await ddbClient.send(new PutItemCommand(params));
             data.Items = [{id, email}];
-            // invokeLambda("sendVerificationEmail", `{"email" : ${email}}`);
+            invokeLambda("sendVerificationEmail", `{"email" : "${email}"}`);
             return response.send(data);
         } catch (error) {
             return error;
