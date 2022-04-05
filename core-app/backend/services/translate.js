@@ -55,21 +55,30 @@ const supportedLanguages = {
 
 
 export const translateFile = async (lines, targetLanguageCode) => {
+
+    
+
     if (!Object.keys(supportedLanguages).includes(targetLanguageCode)) {
         throw new Error("Invalid language code provided.");
     }
 
     try {
         const linesWithTranslatedText = [];
-
+        console.log("in tras");
         for (const line of lines) {
+            console.log("in for");
             const translateCommand = new TranslateTextCommand({
                 SourceLanguageCode: "auto",
                 TargetLanguageCode: targetLanguageCode,
                 Text: line.text
+                
             });
 
+            console.log(line.text);
+
             const result = await client.send(translateCommand);
+
+            console.log(result);
 
             if (result.$metadata.httpStatusCode === 200) {
                 linesWithTranslatedText.push({
@@ -81,6 +90,7 @@ export const translateFile = async (lines, targetLanguageCode) => {
 
         return linesWithTranslatedText;
     } catch (err) {
+        console.log(err);
         return err;
     }
 };
