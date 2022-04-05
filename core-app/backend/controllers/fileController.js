@@ -68,10 +68,11 @@ export const addFileController = async (req, res) => {
 export const viewFileController = async (req, res) => {
     try {
         const id = req.params.id;
+        const groupId = req.params.groupId;
 
         const fileUrlResponse = await readFileUrl({
             file_id: id,
-            group_id: "3658921648704060516",
+            group_id: groupId,
         });
 
         if (!fileUrlResponse || !fileUrlResponse.file_key) {
@@ -92,11 +93,12 @@ export const viewFileController = async (req, res) => {
 export const downloadFileController = async (req, res) => {
     try {
         const id = req.params.id;
+        const groupId = req.params.groupId;
 
         const fileUrlResponse = await readFileUrl(
             {
                 file_id: id,
-                group_id: "image-group",
+                group_id: groupId,
             },
             true
         );
@@ -179,6 +181,7 @@ export const translateFileController = async (req, res) => {
             },
             true
         );
+        
 
         if (!fileUrlResponse || !fileUrlResponse.file_key) {
             res.status(404).send("Not found");
@@ -188,12 +191,14 @@ export const translateFileController = async (req, res) => {
 
         const blocks = await analyzeFile(key);
 
+        if(!blocks){
+            return res.status(500).send("error");
+        }
         const blockLines = blocks.filter(({BlockType}) => BlockType === "LINE").map((block) => {
             return {
                 text: block.Text
             }
         });
-
         const translatedData = await translateFile(blockLines, targetLanguageCode);
 
         res.status(200).send(translatedData);
