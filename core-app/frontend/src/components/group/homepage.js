@@ -48,7 +48,7 @@ const HomePage = () => {
     return (
       <div>
         <Container fluid={true} className="blue-main-gradient py-5 p-2">
-          <h1 className="col-12 m-4">Groups</h1>
+          <h1 className="col-12 m-4">Your Workspaces</h1>
           <Row xs={1} md={4} className="g-4" style={{ marginLeft: "5px" }}>
             {Array.from({ length: 1 }).map((_, idx) =>
               group.map((r) => (
@@ -60,7 +60,7 @@ const HomePage = () => {
                     </Card.Body>
                     <Card.Footer>
                       <Button value={r.id} onClick={ViewGroup}>
-                        View
+                        View Workspace
                       </Button>
                     </Card.Footer>
                   </Card>
