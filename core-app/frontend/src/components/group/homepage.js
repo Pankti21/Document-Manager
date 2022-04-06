@@ -70,7 +70,7 @@ const HomePage = () => {
           </Row>
           <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
             <button type="submit" onClick={handleCreateGroup} style={{ backgroundColor: "blue", color: "white", maxWidth: "10%" }}>
-              create new group
+              Create new Workspace
             </button>
           </div>
         </Container>
@@ -84,7 +84,7 @@ const HomePage = () => {
           </div>
           <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
             <button type="submit" onClick={handleCreateGroup} style={{ backgroundColor: "blue", color: "white", maxWidth: "10%" }}>
-              Create New Group
+              Create New Workspace
             </button>
           </div>
       </Container>
