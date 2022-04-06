@@ -101,7 +101,7 @@ const AddMember = () => {
                 <Form onSubmit={AddNow}>
                     <div style={{marginTop: "20px", width: "50%"}}>
                         <div style={{fontWeight: "bold"}}>
-                            <label>Please select your group members</label>
+                            <label>Please select your workspace members</label>
                         </div>
                         <Select isMulti className="basic-multi-select" classNamePrefix="select" options={users}
                                 name="users" onChange={addMembers}/>

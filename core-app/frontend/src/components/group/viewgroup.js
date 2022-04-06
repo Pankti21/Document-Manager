@@ -168,7 +168,7 @@ const ViewGroup = () => {
         <Container fluid={true}>
             <Row>
                 <Col>
-                    <h1 className="col-12 m-4">Group Files</h1>
+                    <h1 className="col-12 m-4">Workspace Files</h1>
                     <Table striped bordered hover>
                         <thead>
                         <tr>
@@ -176,8 +176,8 @@ const ViewGroup = () => {
                             <th>View file</th>
                             <th>Download File</th>
                             <th>Extract Text</th>
-                            <th>Translate</th>
-                            <th>Get URL</th>
+                            <th>Translate Text</th>
+                            <th>Share URL</th>
                             <th>Get Shorten URL</th>
                         </tr>
                         </thead>
@@ -213,7 +213,7 @@ const ViewGroup = () => {
                                     <td>
                                         {/* <a target="_blank" href={`/geturl/${param.id}/${file.file_id}`} rel="noreferrer"> */}{" "}
                                         <Button variant="secondary" value={`${file.file_id}`} onClick={getUrl}>
-                                            URL
+                                            Share
                                         </Button>{" "}
                                         {/* </a> */}
                                     </td>
@@ -245,7 +245,7 @@ const ViewGroup = () => {
                         marginLeft: "0px",
                     }}
                 >
-                    <h1 className="col-12 m-4">Group members</h1>
+                    <h1 className="col-12 m-4">Workspace members</h1>
                     <Table striped bordered hover>
                         <thead>
                         <tr>

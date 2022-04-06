@@ -19,7 +19,7 @@ const sendMails = (emails, groupName) => {
         })
         invokeLambda("sendEmail",
             `{"emails" : ${emailString}, "subject": "Welcome to ${groupName}",
-        "message": "You have to added to group ${groupName}!"}`);
+        "message": "You have to added to workspace ${groupName}!"}`);
     } catch (e) {
         throw e;
     }
