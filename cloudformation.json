@@ -14,7 +14,7 @@
         "ApplicationName": "cloud-crowd-url-shortener",
         "Description": "Cloud Crowd URL Shortener Application"
       },
-      "DependsOn": "BeanStalkPublicSubnet"
+      "DependsOn": "URLShortenerPrivateSubnet"
     },
     "ElasticBeanStalkEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
@@ -64,6 +64,16 @@
             "Value": "aws-elasticbeanstalk-ec2-role"
           },
           {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "LoadBalancerType",
+            "Value": "classic"
+          },
+          {
+            "Namespace": "aws:ec2:instances",
+            "OptionName": "InstanceTypes",
+            "Value": "t2.micro"
+          },
+          {
             "Namespace": "aws:ec2:vpc",
             "OptionName": "VPCId",
             "Value": {
@@ -73,6 +83,13 @@
           {
             "Namespace": "aws:ec2:vpc",
             "OptionName": "Subnets",
+            "Value": {
+              "Ref": "URLShortenerPrivateSubnet"
+            }
+          },
+          {
+            "Namespace": "aws:ec2:vpc",
+            "OptionName": "ELBSubnets",
             "Value": {
               "Ref": "BeanStalkPublicSubnet"
             }
