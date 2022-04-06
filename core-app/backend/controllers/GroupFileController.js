@@ -17,12 +17,10 @@ export const viewGroupFileController = async (req, res) => {
         }
 
         const key = fileUrlResponse.file_key;
-        console.log(key);
         const fileService = new FileUploader();
         const stream = await fileService.getFileStream(key);
         stream.pipe(res);
     } catch (err) {
-        console.log(err);
         res.status(500).send("Error!");
     }
 };
@@ -45,13 +43,11 @@ export const downloadGroupFileController = async (req, res) => {
         }
 
         const key = fileUrlResponse.file_key;
-        console.log(key);
         const fileService = new FileUploader();
         const stream = await fileService.getFileStream(key);
         res.set("Content-Disposition", `attachment; filename="${fileUrlResponse.file_name}"`);
         stream.pipe(res);
     } catch (err) {
-        console.log(err);
         res.status(500).send("Error!");
     }
 };
@@ -71,10 +67,8 @@ export const getGroupFileURLController = async (req, res) => {
         }
 
         const url = fileUrlResponse.file_url;
-        console.log(url);
         return res.status(200).json({message: url, success: true});
     } catch (err) {
-        console.log(err);
         res.status(500).send("Error!");
     }
 };

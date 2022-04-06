@@ -15,7 +15,6 @@ import {useSelector} from "react-redux";
 
 const ViewGroup = () => {
     const currentUser = useSelector((state) => state.auth.currentUserData);
-    console.log("user:", currentUser);
 
     const param = useParams();
 
@@ -47,8 +46,6 @@ const ViewGroup = () => {
                 headers: {},
             })
             .then((res) => {
-                //console.log("Res: " + JSON.stringify(res));
-                console.log("Res: " + res.data.message);
 
                 Swal.fire({
                     icon: "info",
@@ -57,7 +54,7 @@ const ViewGroup = () => {
                 });
             })
             .catch((err) => {
-                console.log("Err", err);
+                throw err;
             });
     };
 

@@ -16,7 +16,6 @@ const updateGroupUsers = async (request, response) => {
     updatedUserIds = updatedUserIds.substring(0, updatedUserIds.length - 1);
     updatedUserNames = updatedUserNames.substring(0, updatedUserNames.length - 1);
 
-    console.log("group: ", groupId);
 
     const params = {
         TableName: "group",
@@ -31,13 +30,10 @@ const updateGroupUsers = async (request, response) => {
     };
 
     try {
-        console.log("trying");
         const command = new UpdateItemCommand(params);
         const data = await ddbClient.send(command);
-        console.log("tried");
         return response.send(data.Items);
     } catch (error) {
-        console.log(error);
         return error;
     }
 };

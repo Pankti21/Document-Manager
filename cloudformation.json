@@ -333,6 +333,25 @@
         }
       }
     },
+    "S3BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": "cloud-crowd",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "Statement1",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": "s3:*",
+              "Resource": "arn:aws:s3:::cloud-crowd/*"
+            }
+          ]
+        }
+      },
+      "DependsOn": "S3Bucket"
+    },
     "LambdaSendVerificationEmail": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -621,7 +640,8 @@
                 "GroupId"
               ]
             }
-          }, {
+          },
+          {
             "IpProtocol": "tcp",
             "FromPort": 80,
             "ToPort": 80,

@@ -43,7 +43,7 @@ function Register() {
         if (isUserRegistrationDone) {
             if (!isError(userRegistrationData)) {
                 reset();
-                history.push("/home");
+                window.location.reload();
             }
         }
     }, [isUserRegistrationDone]);
