@@ -542,7 +542,10 @@
           "Ref": "BeanStalkPublicSubnet"
         },
         "AllocationId": {
-          "Fn::GetAtt": ["NatPublicIP", "AllocationId"]
+          "Fn::GetAtt": [
+            "NatPublicIP",
+            "AllocationId"
+          ]
         }
       }
     },
@@ -649,7 +652,10 @@
             "FromPort": 443,
             "ToPort": 443,
             "SourceSecurityGroupId": {
-              "Fn::GetAtt": ["CloudCrowdPublicSecurityGroup", "GroupId"]
+              "Fn::GetAtt": [
+                "CloudCrowdPublicSecurityGroup",
+                "GroupId"
+              ]
             }
           },
           {
@@ -657,7 +663,10 @@
             "FromPort": 80,
             "ToPort": 80,
             "SourceSecurityGroupId": {
-              "Fn::GetAtt": ["CloudCrowdPublicSecurityGroup", "GroupId"]
+              "Fn::GetAtt": [
+                "CloudCrowdPublicSecurityGroup",
+                "GroupId"
+              ]
             }
           }
         ],
@@ -712,7 +721,9 @@
           ]
         },
         "ManagedPolicyName": "cloudcrowd",
-        "Users": ["cloud-crowd"]
+        "Users": [
+          "cloud-crowd"
+        ]
       }
     }
   }
