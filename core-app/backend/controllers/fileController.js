@@ -197,6 +197,7 @@ export const translateFileController = async (req, res) => {
                 text: block.Text
             }
         });
+
         const translatedData = await translateFile(blockLines, targetLanguageCode);
 
         res.status(200).send(translatedData);
