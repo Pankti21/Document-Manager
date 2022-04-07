@@ -119,7 +119,7 @@
           "WriteCapacityUnits": 5
         }
       },
-      "DependsOn": "DynamoDBPrivateSubnet2"
+      "DependsOn": "URLShortenerPrivateSubnet2"
     },
     "DynamoDBGroupFileTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -188,7 +188,7 @@
           }
         ]
       },
-      "DependsOn": "DynamoDBPrivateSubnet2"
+      "DependsOn": "URLShortenerPrivateSubnet2"
     },
     "DynamoDBPermissionTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -219,7 +219,7 @@
           "WriteCapacityUnits": 5
         }
       },
-      "DependsOn": "DynamoDBPrivateSubnet2"
+      "DependsOn": "URLShortenerPrivateSubnet2"
     },
     "DynamoDBShortenedURLTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -260,7 +260,7 @@
           "WriteCapacityUnits": 5
         }
       },
-      "DependsOn": "DynamoDBPrivateSubnet2"
+      "DependsOn": "URLShortenerPrivateSubnet2"
     },
     "DynamoDBUserTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -283,7 +283,7 @@
           "WriteCapacityUnits": 5
         }
       },
-      "DependsOn": "DynamoDBPrivateSubnet2"
+      "DependsOn": "URLShortenerPrivateSubnet2"
     },
     "DynamoDBUserGroupTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -336,7 +336,7 @@
           "WriteCapacityUnits": 5
         }
       },
-      "DependsOn": "DynamoDBPrivateSubnet2"
+      "DependsOn": "URLShortenerPrivateSubnet2"
     },
     "S3Bucket": {
       "Type": "AWS::S3::Bucket",
@@ -463,7 +463,7 @@
       },
       "DependsOn": "VPC"
     },
-    "DynamoDBPrivateSubnet2": {
+    "URLShortenerPrivateSubnet2": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "VpcId": {
@@ -587,11 +587,11 @@
         }
       }
     },
-    "DynamoDBPrivateSubnet2RouteTableAssociation": {
+    "URLShortenerPrivateSubnet2RouteTableAssociation": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "SubnetId": {
-          "Ref": "DynamoDBPrivateSubnet2"
+          "Ref": "URLShortenerPrivateSubnet2"
         },
         "RouteTableId": {
           "Ref": "PrivateRouteTable"
@@ -694,7 +694,7 @@
             "Ref": "URLShortenerPrivateSubnet"
           },
           {
-            "Ref": "DynamoDBPrivateSubnet2"
+            "Ref": "URLShortenerPrivateSubnet2"
           }
         ]
       }
